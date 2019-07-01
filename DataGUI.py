@@ -100,7 +100,7 @@ class DataWin(QMainWindow):
         """
 
         to_many = self.To_Many()
-        if to_many == False:
+        if to_many is False:
             # Grab layout if available
             layout = self.ui.Expenses.layout()
 
