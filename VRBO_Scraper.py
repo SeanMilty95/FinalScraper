@@ -1,3 +1,4 @@
+# Author: Sean Miltenberger
 from GUIhelp import *
 import sys
 
