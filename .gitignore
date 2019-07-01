@@ -1,7 +1,18 @@
+#batch files
+*.bat
+
+#Data files generated from program testing
+*-data.txt
+*Specs.txt
+*expenses.txt
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# PDF files
+*.pdf
 
 # C extensions
 *.so
