@@ -21,6 +21,8 @@ class Window(QMainWindow):
     def initUI(self):
         self.ui.setWindowTitle(self.title)
         self.ui.move(self.width, self.height)
+        self.ui.ErrorEdit.hide()
+        self.ui.ErrorEdit.setReadOnly(True)
         self.fill_unit_list()
         # Calls functions when the designated pushButton is clicked
         self.ui.pushButton_2.clicked.connect(self.addUnit)
@@ -48,30 +50,40 @@ class Window(QMainWindow):
         layout.update()
 
     def addUnit(self):
+        valid_info = False
         # Take the input from user and add the information to units.txt
         unit_name = self.ui.lineEdit.text()
         unit_url = self.ui.lineEdit_2.text()
-        if unit_name is not None and unit_url is not None:  # If a field is empty do not add to file
-            self.ui.lineEdit.clear()
-            self.ui.lineEdit_2.clear()
-            date = str(datetime.date.today())
-            unit_info = unit_name + ' ' + unit_url + ' ' + date + '\n'
-            url_file = open('units.txt', 'a+')
-            url_file.write(unit_info)
-            url_file.close()
 
-        # Opens and reads from the list in units.txt
-        in_file = open('units.txt', 'r')
-        unit_list = in_file.readlines()
-        self.all_lines = unit_list
-        in_file.close()
-
-        layout = self.ui.scrollAreaWidgetContents.layout()
-        if layout is None or layout == '':
-            self.fill_unit_list()
+        if unit_name == '' or unit_url == '':
+            self.ui.ErrorEdit.show()
+            self.ui.ErrorEdit.setText('Please fill out the unit information in the spaces provided.')
         else:
-            layout.addWidget(QCheckBox(unit_name))
-            layout.update()
+            self.ui.ErrorEdit.clear()
+            self.ui.ErrorEdit.hide()
+            valid_info = True
+        if valid_info:
+            if unit_name is not None and unit_url is not None:  # If a field is empty do not add to file
+                self.ui.lineEdit.clear()
+                self.ui.lineEdit_2.clear()
+                date = str(datetime.date.today())
+                unit_info = unit_name + ' ' + unit_url + ' ' + date + '\n'
+                url_file = open('units.txt', 'a+')
+                url_file.write(unit_info)
+                url_file.close()
+
+            # Opens and reads from the list in units.txt
+            in_file = open('units.txt', 'r')
+            unit_list = in_file.readlines()
+            self.all_lines = unit_list
+            in_file.close()
+
+            layout = self.ui.scrollAreaWidgetContents.layout()
+            if layout is None or layout == '':
+                self.fill_unit_list()
+            else:
+                layout.addWidget(QCheckBox(unit_name))
+                layout.update()
 
     def deleteUnit(self):
         # Fill a list with QCheckBoxes. If a box is not checked add it to units.txt
