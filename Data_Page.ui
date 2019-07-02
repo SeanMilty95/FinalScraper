@@ -357,6 +357,16 @@ p, li { white-space: pre-wrap; }
      <string>Save Expenses</string>
     </property>
    </widget>
+   <widget class="QLineEdit" name="ErrorEdit">
+    <property name="geometry">
+     <rect>
+      <x>360</x>
+      <y>50</y>
+      <width>431</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

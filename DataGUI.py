@@ -27,6 +27,8 @@ class DataWin(QMainWindow):
 
         # Add Listing name to data file
         self.ui.Unit_Name.setText(self.listing + ' Data')
+        self.ui.ErrorEdit.setReadOnly(True)
+        self.ui.ErrorEdit.hide()
 
         # Gather data from file
         try:
@@ -40,7 +42,8 @@ class DataWin(QMainWindow):
                         print("Not A Number")
                     self.given_rate = row['given_rate']
         except IOError:
-            print("No such File")
+            self.ui.ErrorEdit.show()
+            self.ui.ErrorEdit.setText("No data file found for this unit. Generate data from the main menu.")
 
         # Populate data page with the gathered data
         self.ui.Gross.setText(str(self.revenue))
