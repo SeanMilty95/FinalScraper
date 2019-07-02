@@ -87,6 +87,7 @@ class Window(QMainWindow):
                 if checkBoxes[i].isChecked() is False:
                     f.write(lines[i])
                 else:
+                    checkBoxes[i].setChecked(False)
                     checkBoxes[i].hide()
                     layout.update()
 
@@ -105,6 +106,7 @@ class Window(QMainWindow):
         for i in range(len(checkBoxes)):
             if checkBoxes[i].isChecked() is True:
                 units.append(self.all_lines[i].split(' '))
+                checkBoxes[i].setChecked(False)
         self.get_info_for(units)
         # Generate the data GUI to present the data gathered from the listings html
         for unit in units:

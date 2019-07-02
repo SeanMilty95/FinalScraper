@@ -134,7 +134,7 @@ class DataWin(QMainWindow):
             # Add Horizontal box layout to the Qwidget
             WidgetBox.setLayout(HLayout)
 
-            if layout == None:
+            if layout is None:
                 # If no layout exists for the QFrame 'Expenses' create vertical layout
                 # and add widget
                 VBox = QVBoxLayout()
@@ -152,7 +152,7 @@ class DataWin(QMainWindow):
 
     def calc_net(self):
         """
-        Loop throught the lineEdits with integer values and find the sum
+        Loop through the lineEdits with integer values and find the sum
         Subtract that sum from the Gross income value found elsewhere
         Set lineEdit text for net income
         """
@@ -162,7 +162,7 @@ class DataWin(QMainWindow):
         edits = self.ui.Expenses.findChildren(QLineEdit, 'expTot')
         # Add all non blank values to a list if integer values
         for edit in edits:
-            if edit.text() != None and edit.text() != '':
+            if edit.text() is not None and edit.text() != '':
                 values.append(float(edit.text()))
         # Subtract each value from the gross profit
         for value in values:
