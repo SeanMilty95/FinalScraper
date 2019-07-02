@@ -29,6 +29,7 @@ class Window(QMainWindow):
         self.ui.pushButton_5.clicked.connect(self.deleteUnit)
         self.ui.pushButton_3.clicked.connect(self.updateAll)
         self.ui.pushButton.clicked.connect(self.generate)
+        self.ui.show_data.clicked.connect(self.show_data_page)
 
     def fill_unit_list(self):
         # Opens and reads from the list in units.txt
@@ -125,6 +126,18 @@ class Window(QMainWindow):
             datawin = DataWin(unit[0])
             datawin.show()
             datawin.activateWindow()
+
+    def show_data_page(self):
+        checkBoxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
+        units = []
+        for i in range(len(checkBoxes)):
+            if checkBoxes[i].isChecked() is True:
+                units.append(self.all_lines[i].split(' '))
+                checkBoxes[i].setChecked(False)
+        for unit in units:
+            data_win = DataWin(unit[0])
+            data_win.show()
+            data_win.activateWindow()
 
     def get_info_for(self, units):
         # Creates a driver for chrome
