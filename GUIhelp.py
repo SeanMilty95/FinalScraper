@@ -1,5 +1,5 @@
-from win32api import GetSystemMetrics
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from DataGUI import *
 from HelperFunctions import *
 import pyautogui
@@ -141,10 +141,16 @@ class Window(QMainWindow):
 
     def get_info_for(self, units):
         # Creates a driver for chrome
-        driver = webdriver.Chrome(executable_path=r'chromedriver.exe')
+        opts = Options()
+        opts.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                          "AppleWebKit/537.36 (KHTML, like Gecko) "
+                          "Chrome/75.0.3770.100 Safari/537.36")
+        #opts.add_argument("--disable-infobars")
+        #driver = webdriver.Chrome(executable_path=r'chromedriver.exe')
+        driver = webdriver.Chrome(chrome_options=opts)
         for unit in units:
             driver.get(unit[1])  # Goes to the url listed for the unit
-
+            self.ui.move(self.width + 500, self.height)
             # Right clicks and left clicks to inspect web page elements
             time.sleep(1)
             actions = ActionChains(driver)

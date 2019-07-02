@@ -1,6 +1,7 @@
 from PyQt5 import uic
 from PyQt5.QtPrintSupport import *
 from PyQt5.QtWidgets import *
+from win32api import GetSystemMetrics
 import csv
 
 
@@ -16,6 +17,8 @@ class DataWin(QMainWindow):
         self.booked_num = 0
         self.rating = 4.5
         self.expenseCount = 0
+        self.width = GetSystemMetrics(0) / 3.5
+        self.height = GetSystemMetrics(1) / 20
         self.inputData()
         self.Buttons()
 
@@ -24,11 +27,14 @@ class DataWin(QMainWindow):
         Open the data file that contains the csv objects read from
         there and populate the data GUI
         """
-
+        self.ui.move(self.width - 350, self.height)
         # Add Listing name to data file
+        self.ui.setWindowTitle(self.listing + ' Data Page')
         self.ui.Unit_Name.setText(self.listing + ' Data')
         self.ui.ErrorEdit.setReadOnly(True)
         self.ui.ErrorEdit.hide()
+        self.ui.ExpenseError.setReadOnly(True)
+        self.ui.ExpenseError.hide()
 
         # Gather data from file
         try:
@@ -60,7 +66,8 @@ class DataWin(QMainWindow):
             with open(self.listing + 'expenses.txt', 'r', newline='') as expfile:
                 expenses = expfile.readlines()
         except IOError:
-            print("No Expense File Found\nNo Expenses Added")
+            self.ui.ExpenseError.show()
+            self.ui.ExpenseError.setText("No Expense File Found. No Expenses Added")
             add = False
 
         if add:
@@ -216,5 +223,5 @@ class DataWin(QMainWindow):
         """
 
         self.expenseCount += 1
-        count = self.ui.Counter.setText(str(self.expenseCount) + ' / 12')
+        self.ui.Counter.setText(str(self.expenseCount) + ' / 12')
 

@@ -168,7 +168,7 @@ def print_current_unit_options(unit_list):
 def choose_unit(lines_list):
     url_target = ''
     # Ask what unit info you want to generate
-    selected_unit = input("Select a unit from the above list to generate data.: ")
+    selected_unit = input("Select a unit from the above list to generate data.:")
     for line in lines_list:
         if selected_unit == line[0]:
             url_target = line[1]
@@ -252,7 +252,7 @@ def gen_data_file(Month_List, occupancy_rates, tot_rev, selected_unit):
         print("Data File Does Not Exist")
         append = True
 
-    if append == False:
+    if append is False:
         for i in range(len(rows)):
             for k in range(4):
                 if rows[i]['year'] == year[k] and rows[i]['month'] == month_name[k]:
