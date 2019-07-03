@@ -1,4 +1,5 @@
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 from bs4 import BeautifulSoup
 from decimal import Decimal
 import time
@@ -84,10 +85,16 @@ def next_calendar(driver):
     """
     Finds the next button for the calendar section and virtually clicks it.
     """
-    rates_elem = driver.find_element_by_class_name('rate-details')
-    actions = ActionChains(driver)
-    actions.move_to_element(rates_elem)
-    actions.perform()
+    rates_elem = None
+    try:
+        rates_elem = driver.find_element_by_class_name('rate-details')
+    except NoSuchElementException:
+        time.sleep(1)
+        print("Rate-details element not found in the gathered HTML")
+    if rates_elem is not None:
+        actions = ActionChains(driver)
+        actions.move_to_element(rates_elem)
+        actions.perform()
     time.sleep(0.3)
     next_cal_elem = driver.find_element_by_class_name('cal-controls__button--next')
     ActionChains(driver).click(next_cal_elem).perform()
@@ -221,6 +228,7 @@ def gen_data_file(Month_List, occupancy_rates, tot_rev, selected_unit):
     year = []
     month_name = []
     new_given = 0
+    rating = 0
 
     # Do maths for updated values
     for month in Month_List:
@@ -231,6 +239,7 @@ def gen_data_file(Month_List, occupancy_rates, tot_rev, selected_unit):
         new_revenue.append(month[8])
         year.append(month[1])
         month_name.append(month[0])
+        rating = month[9]
 
     # Holds the rows from the reader
     rows = []
@@ -240,7 +249,7 @@ def gen_data_file(Month_List, occupancy_rates, tot_rev, selected_unit):
         new_dict.append(
             {'year': year[i], 'month': month_name[i], 'given_rate': new_given, 'available_days': new_avail_days[i],
              'booked_days': new_booked_days[i],
-             'revenue': new_revenue[i]})
+             'revenue': new_revenue[i], 'rating': rating})
 
     try:
         with open(selected_unit + 'Specs.txt', 'r+', newline='') as csvfile:
@@ -266,7 +275,7 @@ def gen_data_file(Month_List, occupancy_rates, tot_rev, selected_unit):
             rows.append(new_dict[i])
 
     with open(selected_unit + 'Specs.txt', 'w+', newline='') as csvfile:
-        fieldnames = ['month', 'year', 'given_rate', 'available_days', 'booked_days', 'revenue']
+        fieldnames = ['month', 'year', 'given_rate', 'available_days', 'booked_days', 'revenue', 'rating']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for i in range(len(rows)):
@@ -296,6 +305,7 @@ def Get_Month_Info(driver):
         available_days = get_available_days(days)
         cal_prices = have_calendar_prices(available_days)
         month_name, year = find_month(soup)
+        rating = find_rating(soup)
         booked_days = get_booked_days(days)
         past_days = get_past_days(days)
         if cal_prices:
@@ -306,7 +316,7 @@ def Get_Month_Info(driver):
             given_rate = get_avg_listed_rate(soup)
         revenue = month_revenue(booked_days, cal_prices, average_rate, given_rate)
         packet = (month_name, year, given_rate, average_rate, cal_prices, available_days, booked_days,
-                  past_days, revenue)
+                  past_days, revenue, rating)
         Month_List.append(packet)
 
     return Month_List
@@ -351,8 +361,14 @@ def get_total_revenue(Month_List):
 
 
 def reload_page():
-    pyautogui.hotkey('f5')
-    time.sleep(2)
+    #pyautogui.hotkey('f5')
+    #time.sleep(2)
     pyautogui.scroll(-6000)
     time.sleep(2)
 
+def find_rating(soup):
+    rating_div = soup.find(class_="review-summary__header-ratings-average")
+    contents = rating_div.contents
+    contents2 = contents[0].split('/')
+    rating = contents2[0]
+    return rating

@@ -111,6 +111,7 @@ class Window(QMainWindow):
             line = line.split(' ')
             units.append(line)
         self.get_info_for(units)
+        print("Updates Complete")
 
     def generate(self):
         # Start the selenium code for the listing url for the checked listing

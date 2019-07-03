@@ -15,7 +15,7 @@ class DataWin(QMainWindow):
         self.revenue = 0
         self.given_rate = 0
         self.booked_num = 0
-        self.rating = 4.5
+        self.rating = 0
         self.expenseCount = 0
         self.width = GetSystemMetrics(0) / 3.5
         self.height = GetSystemMetrics(1) / 20
@@ -47,15 +47,22 @@ class DataWin(QMainWindow):
                     except ValueError:
                         print("Not A Number")
                     self.given_rate = row['given_rate']
+                    self.rating = row['rating']
         except IOError:
             self.ui.ErrorEdit.show()
             self.ui.ErrorEdit.setText("No data file found for this unit. Generate data from the main menu.")
 
         # Populate data page with the gathered data
+        self.ui.Gross.setReadOnly(True)
+        self.ui.Given.setReadOnly(True)
+        self.ui.Booked.setReadOnly(True)
+        self.ui.Rating.setReadOnly(True)
+        self.ui.Net.setReadOnly(True)
+
         self.ui.Gross.setText(str(self.revenue))
         self.ui.Given.setText(str(self.given_rate))
         self.ui.Booked.setText(str(self.booked_num))
-        self.ui.Rating.setText(str(self.rating))
+        self.ui.Rating.setText(str(self.rating + '/5'))
 
         # Add any previous expenses if they exist
         count1 = 0
@@ -166,6 +173,7 @@ class DataWin(QMainWindow):
         Subtract that sum from the Gross income value found elsewhere
         Set lineEdit text for net income
         """
+
         net_income = float(self.ui.Gross.text())  # Grab the gross income for the listing
         values = []
         # Grab all the Line Edit children from the QFrame 'Expenses'
