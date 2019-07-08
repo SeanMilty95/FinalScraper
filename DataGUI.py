@@ -50,6 +50,8 @@ class DataWin(QMainWindow):
                         print("Not A Number")
                     self.given_rate = row['given_rate']
                     self.rating = row['rating']
+                    self.ui.month_name.setText(row['month'].upper())
+                    self.ui.NetMonth.setText(row['month'].upper())
         except IOError:
             self.ui.ErrorEdit.show()
             self.ui.ErrorEdit.setText("No data file found for this"
@@ -68,7 +70,13 @@ class DataWin(QMainWindow):
         self.ui.Given.setText(str(self.given_rate))
         self.ui.Booked.setText(str(self.booked_num))
         self.ui.Rating.setText(str(self.rating + '/5'))
-        self.ui.month_name.setText(row['month'].upper())
+
+        try:
+            with open(self.listing + "Notes.txt", 'r', newline='') as sumfile:
+                summary_notes = "Summary Notes: " + sumfile.read()
+        except IOError:
+            summary_notes = 'Summary Notes: '
+        self.ui.SumNotes.setPlainText(summary_notes)
 
         # Add any previous expenses if they exist
         count1 = 0
@@ -113,6 +121,7 @@ class DataWin(QMainWindow):
         self.ui.pushButton_2.clicked.connect(self.calc_net)
         self.ui.pushButton_3.clicked.connect(self.save_pdf)
         self.ui.save_exp.clicked.connect(self.save_expenses)
+        self.ui.SaveNotes.clicked.connect(self.save_notes)
 
     def add_expense(self):
         """Add 3 lineEdits to the Exspenses QWidget.
@@ -179,7 +188,8 @@ class DataWin(QMainWindow):
         Set lineEdit text for net income.
         """
 
-        net_income = float(self.ui.Gross.text().strip('$'))  # Grab the gross income for the listing
+        net_income_month = float(self.ui.Gross.text().strip('$'))  # Grab the gross income for the listing
+        #net_income_annual = float(self.ui.AnnualGross.text().strip('$'))
         values = []
         # Grab all the Line Edit children from the QFrame 'Expenses'
         edits = self.ui.Expenses.findChildren(QLineEdit, 'expTot')
@@ -190,10 +200,10 @@ class DataWin(QMainWindow):
                 values.append(float(newval))
         # Subtract each value from the gross profit
         for value in values:
-            net_income -= value
+            net_income_month -= value
         # Set the Line Edit text equal to the net income
-        self.ui.Net.setText('$ ' + str(net_income))
-        if net_income == float(self.ui.Gross.text().strip('$')):
+        self.ui.Net.setText('$ ' + str(net_income_month))
+        if net_income_month == float(self.ui.Gross.text().strip('$')):
             self.ui.ErrorEdit.show()
             self.ui.ErrorEdit.setText("No Expenses used in calculations!")
 
@@ -234,6 +244,10 @@ class DataWin(QMainWindow):
             return True
         else:
             return False
+
+    def save_notes(self):
+        with open(self.listing + "Notes.txt", 'w+', newline='') as sumfile:
+            sumfile.write(self.ui.SumNotes.toPlainText())
 
     def update_count(self):
         """Gets the counter of expense horzwidgets and updates the

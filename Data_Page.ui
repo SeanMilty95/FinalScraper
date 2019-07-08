@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>1017</height>
+    <width>806</width>
+    <height>1009</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -121,13 +121,13 @@
      </font>
     </property>
     <property name="text">
-     <string>Net Income</string>
+     <string>Net Income:</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="Net">
     <property name="geometry">
      <rect>
-      <x>200</x>
+      <x>190</x>
       <y>550</y>
       <width>113</width>
       <height>20</height>
@@ -220,7 +220,7 @@
      <string>Unavailable</string>
     </property>
    </widget>
-   <widget class="QTextEdit" name="textEdit">
+   <widget class="QTextEdit" name="SumNotes">
     <property name="geometry">
      <rect>
       <x>20</x>
@@ -441,13 +441,75 @@ p, li { white-space: pre-wrap; }
      <string>Unavailable</string>
     </property>
    </widget>
+   <widget class="QLabel" name="NetMonth">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>550</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>month name 2</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>330</x>
+      <y>550</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Net Income:   Annual</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="AnnualNet">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>550</y>
+      <width>113</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="placeholderText">
+     <string>Press Calculate</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="SaveNotes">
+    <property name="geometry">
+     <rect>
+      <x>710</x>
+      <y>760</y>
+      <width>75</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Save Notes</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>806</width>
      <height>21</height>
     </rect>
    </property>
