@@ -1,8 +1,9 @@
+import csv
+
 from PyQt5 import uic
 from PyQt5.QtPrintSupport import *
 from PyQt5.QtWidgets import *
 from win32api import GetSystemMetrics
-import csv
 
 
 class DataWin(QMainWindow):
@@ -23,9 +24,8 @@ class DataWin(QMainWindow):
         self.Buttons()
 
     def inputData(self):
-        """
-        Open the data file that contains the csv objects read from
-        there and populate the data GUI
+        """Open the data file that contains the csv objects read from
+        there and populate the data GUI.
         """
         self.ui.move(self.width - 350, self.height)
         # Add Listing name to data file
@@ -50,7 +50,9 @@ class DataWin(QMainWindow):
                     self.rating = row['rating']
         except IOError:
             self.ui.ErrorEdit.show()
-            self.ui.ErrorEdit.setText("No data file found for this unit. Generate data from the main menu.")
+            self.ui.ErrorEdit.setText("No data file found for this"
+                                      "unit. Generate data from the"
+                                      "main menu.")
 
         # Populate data page with the gathered data
         self.ui.Gross.setReadOnly(True)
@@ -100,9 +102,8 @@ class DataWin(QMainWindow):
                     count2 += 1
 
     def Buttons(self):
-        """
-        The following code will call the function in parenthesis
-        when the designated button is clicked
+        """The following code will call the function in parenthesis
+        when the designated button is clicked.
         """
         self.ui.pushButton.clicked.connect(self.AddExpense)
         self.ui.pushButton_2.clicked.connect(self.calc_net)
@@ -110,10 +111,9 @@ class DataWin(QMainWindow):
         self.ui.save_exp.clicked.connect(self.save_expenses)
 
     def AddExpense(self):
-        """
-        Add 3 lineEdits to the Exspenses QWidget
+        """Add 3 lineEdits to the Exspenses QWidget.
         Has form layout(may need to delete in designer and add via python)
-        if need to create via python dont forget to addd placeholder text
+        if need to create via python dont forget to add placeholder text.
         """
 
         to_many = self.To_Many()
@@ -168,10 +168,10 @@ class DataWin(QMainWindow):
             self.updateCount()
 
     def calc_net(self):
-        """
-        Loop through the lineEdits with integer values and find the sum
-        Subtract that sum from the Gross income value found elsewhere
-        Set lineEdit text for net income
+        """Loop through the lineEdits with integer values and find
+        the sum.
+        Subtract that sum from the Gross income value found elsewhere.
+        Set lineEdit text for net income.
         """
 
         net_income = float(self.ui.Gross.text())  # Grab the gross income for the listing
@@ -189,9 +189,8 @@ class DataWin(QMainWindow):
         self.ui.Net.setText(str(net_income))
 
     def save_expenses(self):
-        """
-        Saves the expenses created by the user for future reference
-        stored in a text file named 'listing'expenses.txt
+        """Saves the expenses created by the user for future reference
+        stored in a text file named 'listing'expenses.txt.
         """
         expenses = self.ui.Expenses.findChildren(QWidget, 'HorzWidget')
         with open(self.listing + 'expenses.txt', 'w+', newline='') as expfile:
@@ -200,10 +199,9 @@ class DataWin(QMainWindow):
                 expfile.write(edits[0].text() + ',' + edits[1].text() + ',' + edits[2].text() + '\n')
 
     def Save_PDF(self):
-        """
-        Take a screenshot of the data GUI
+        """Take a screenshot of the data GUI
         Send to the QPrinter or QPainter and set value as pdf
-        check favorited links for possible examples
+        check favorited links for possible examples.
         """
 
         printer = QPrinter(QPrinter.HighResolution)
@@ -214,9 +212,9 @@ class DataWin(QMainWindow):
         self.render(printer)
 
     def To_Many(self):
-        """
-        Checks the amount of children called 'HorzWidget' from the 'Expenses' widget
-        Returns true if the number is 12 and false if less than 12
+        """Checks the amount of children called 'HorzWidget' from
+        the 'Expenses' widget.
+        Returns true if the number is 12 and false if less than 12.
         """
 
         num_widgets = self.ui.Expenses.findChildren(QWidget, 'HorzWidget')
@@ -226,8 +224,8 @@ class DataWin(QMainWindow):
             return False
 
     def updateCount(self):
-        """
-        Gets the counter of expense horzwidgets and updates the counter label.
+        """Gets the counter of expense horzwidgets and updates the
+        counter label.
         """
 
         self.expenseCount += 1

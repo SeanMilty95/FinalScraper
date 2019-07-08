@@ -1,8 +1,8 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from DataGUI import *
+
 from HelperFunctions import *
-import pyautogui
 
 
 class Window(QMainWindow):
@@ -10,20 +10,19 @@ class Window(QMainWindow):
         super(Window, self).__init__()
         # Load .ui file created in the designer program
         self.ui = uic.loadUi('GUI.ui', self)
-        self.title = "VRBO Scraper Tool"
+        self.ui.setWindowTitle("VRBO Web Scraper")
         # Gets the dimensions of the screen
         self.width = GetSystemMetrics(0) / 3.5
         self.height = GetSystemMetrics(1) / 3
+        self.ui.move(self.width, self.height)
         # List that will hold the lines from unit.txt
         self.all_lines = []
-        self.initUI()
-
-    def initUI(self):
-        self.ui.setWindowTitle(self.title)
-        self.ui.move(self.width, self.height)
-        self.ui.ErrorEdit.hide()
-        self.ui.ErrorEdit.setReadOnly(True)
         self.fill_unit_list()
+        self.hide_error_boxes()
+        self.button_listener()
+
+    def button_listener(self):
+        """Listens for button clicks."""
         # Calls functions when the designated pushButton is clicked
         self.ui.pushButton_2.clicked.connect(self.addUnit)
         self.ui.pushButton_5.clicked.connect(self.deleteUnit)
@@ -31,7 +30,15 @@ class Window(QMainWindow):
         self.ui.pushButton.clicked.connect(self.generate)
         self.ui.show_data.clicked.connect(self.show_data_page)
 
+    def hide_error_boxes(self):
+        """Hides the Text Edit used to display error messages."""
+        self.ui.ErrorEdit.hide()
+        self.ui.ErrorEdit.setReadOnly(True)
+
     def fill_unit_list(self):
+        """Fills the scroll area with the units that are available
+        from the data.txt file. Adds a checkbox for each unit.
+        """
         # Opens and reads from the list in units.txt
         in_file = open('units.txt', 'r')
         unit_list = in_file.readlines()
@@ -46,11 +53,15 @@ class Window(QMainWindow):
             self.ui.scrollAreaWidgetContents.setLayout(layout)
         for i in range(len(unit_list)):
             line = unit_list[i].split(' ')
-            name = line[0]
-            layout.addWidget(QCheckBox(name))
+            layout.addWidget(QCheckBox(line[0]))
         layout.update()
 
     def addUnit(self):
+        """Uses the info given by the user in the Text Edits to add
+        a units information to the units.txt file.
+        It will then call fill_unit_list() to add the new unit to
+        the scroll area.
+        """
         valid_info = False
         # Take the input from user and add the information to units.txt
         unit_name = self.ui.lineEdit.text()
@@ -87,6 +98,9 @@ class Window(QMainWindow):
                 layout.update()
 
     def deleteUnit(self):
+        """Deletes a unit from the units.txt file and
+        removes its check box from the scroll area.
+        """
         # Fill a list with QCheckBoxes. If a box is not checked add it to units.txt
         # This essential deletes the units that were checked.
         checkBoxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
@@ -96,7 +110,7 @@ class Window(QMainWindow):
             lines = f.readlines()
         with open('units.txt', 'w') as f:
             for i in range(len(lines)):
-                split_line = lines[i].split(' ')
+                # split_line = lines[i].split(' ')
                 if checkBoxes[i].isChecked() is False:
                     f.write(lines[i])
                 else:
@@ -105,6 +119,9 @@ class Window(QMainWindow):
                     layout.update()
 
     def updateAll(self):
+        """Gathers and updates all the unit info for the units
+        that can be found in the units.txt file.
+        """
         # Start the selenium code and start scraping the listing html for information
         units = []
         for line in self.all_lines:
@@ -114,6 +131,9 @@ class Window(QMainWindow):
         print("Updates Complete")
 
     def generate(self):
+        """Gathers data for any units that has it's check box checked.
+        A data GUI is then created and shown to the user.
+        """
         # Start the selenium code for the listing url for the checked listing
         checkBoxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
         units = []
@@ -124,11 +144,14 @@ class Window(QMainWindow):
         self.get_info_for(units)
         # Generate the data GUI to present the data gathered from the listings html
         for unit in units:
-            datawin = DataWin(unit[0])
-            datawin.show()
-            datawin.activateWindow()
+            data_win = DataWin(unit[0])
+            data_win.show()
+            data_win.activateWindow()
 
     def show_data_page(self):
+        """Generates a data GUI window to show a user the stored
+        information on a unit. Generates no new data.
+        """
         checkBoxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
         units = []
         for i in range(len(checkBoxes)):
@@ -141,6 +164,11 @@ class Window(QMainWindow):
             data_win.activateWindow()
 
     def get_info_for(self, units):
+        """Starts the webdriver process and sends the needed information
+        to various helper functions. Moves the main window so it
+        remains visible. Also clicks the inspect option of the context
+        click.
+        """
         # Creates a driver for chrome
         opts = Options()
         opts.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -167,7 +195,6 @@ class Window(QMainWindow):
 
             tot_rev = get_total_revenue(Month_List)
 
-            # file_output(Month_List, occupancy_rates, tot_rev, unit[0])
             gen_data_file(Month_List, occupancy_rates, tot_rev, unit[0])
         # Closes chrome and everything it was using
         driver.quit()

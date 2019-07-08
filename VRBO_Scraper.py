@@ -1,6 +1,7 @@
 # Author: Sean Miltenberger
-from GUIhelp import *
 import sys
+
+from GUIhelp import *
 
 # Generate the main gui window
 app = QApplication([])
