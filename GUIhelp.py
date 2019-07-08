@@ -223,7 +223,7 @@ class Window(QMainWindow):
                           "Chrome/75.0.3770.100 Safari/537.36")
         driver = webdriver.Chrome(chrome_options=opts)
         for unit in units:
-            print("Getting info for " + unit['name'] + " at " +unit['url'])
+            # print("Getting info for " + unit['name'] + " at " + unit['url'])
             # Instead of a list create a dictionary with a key of url
             driver.get(unit['url'])  # Goes to the url listed for the unit
             # Right clicks and left clicks to inspect web page elements
