@@ -1,9 +1,4 @@
-Test1 https://www.vrbo.com/314430 2019-06-03
-Test2 https://www.vrbo.com/417938 2019-06-03
-Test5 https://www.vrbo.com/833921 2019-06-04
-7H https://www.vrbo.com/318165 2019-06-04
-12B https://www.vrbo.com/113002 2019-06-04
-5C https://www.vrbo.com/1213536 2019-06-04
-13E https://www.vrbo.com/167069ha 2019-06-04
-12D https://www.vrbo.com/127113 2019-06-04
-14B https://www.vrbo.com/7468642ha 2019-06-20
+name,url,date
+building 8,https://www.vrbo.com/314430,2019-07-08
+hailiki 7c,https://www.vrbo.com/417938,2019-07-08
+hailiki 7c,https://www.vrbo.com/417938,2019-07-08

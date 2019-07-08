@@ -21,7 +21,7 @@ class DataWin(QMainWindow):
         self.width = GetSystemMetrics(0) / 3.5
         self.height = GetSystemMetrics(1) / 20
         self.input_data()
-        self.Buttons()
+        self.buttons()
 
     def input_data(self):
         """Open the data file that contains the csv objects read from
@@ -104,9 +104,9 @@ class DataWin(QMainWindow):
         """The following code will call the function in parenthesis
         when the designated button is clicked.
         """
-        self.ui.pushButton.clicked.connect(self.AddExpense)
+        self.ui.pushButton.clicked.connect(self.add_expense)
         self.ui.pushButton_2.clicked.connect(self.calc_net)
-        self.ui.pushButton_3.clicked.connect(self.Save_PDF)
+        self.ui.pushButton_3.clicked.connect(self.save_pdf)
         self.ui.save_exp.clicked.connect(self.save_expenses)
 
     def add_expense(self):
@@ -115,7 +115,7 @@ class DataWin(QMainWindow):
         if need to create via python dont forget to add placeholder text.
         """
 
-        to_many = self.To_Many()
+        to_many = self.to_many()
         if to_many is False:
             # Grab layout if available
             layout = self.ui.Expenses.layout()
