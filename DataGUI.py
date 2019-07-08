@@ -20,10 +20,10 @@ class DataWin(QMainWindow):
         self.expenseCount = 0
         self.width = GetSystemMetrics(0) / 3.5
         self.height = GetSystemMetrics(1) / 20
-        self.inputData()
+        self.input_data()
         self.Buttons()
 
-    def inputData(self):
+    def input_data(self):
         """Open the data file that contains the csv objects read from
         there and populate the data GUI.
         """
@@ -68,7 +68,6 @@ class DataWin(QMainWindow):
 
         # Add any previous expenses if they exist
         count1 = 0
-        count2 = 0
         add = True
         # Open the expenses file
         try:
@@ -101,7 +100,7 @@ class DataWin(QMainWindow):
                     edit.setText(strings1[count1 - 1][count2])
                     count2 += 1
 
-    def Buttons(self):
+    def buttons(self):
         """The following code will call the function in parenthesis
         when the designated button is clicked.
         """
@@ -110,7 +109,7 @@ class DataWin(QMainWindow):
         self.ui.pushButton_3.clicked.connect(self.Save_PDF)
         self.ui.save_exp.clicked.connect(self.save_expenses)
 
-    def AddExpense(self):
+    def add_expense(self):
         """Add 3 lineEdits to the Exspenses QWidget.
         Has form layout(may need to delete in designer and add via python)
         if need to create via python dont forget to add placeholder text.
@@ -122,15 +121,15 @@ class DataWin(QMainWindow):
             layout = self.ui.Expenses.layout()
 
             # Initialize a horizontal box layout to hold line edits
-            HLayout = QHBoxLayout()
-            HLayout.setSpacing(5)
-            HLayout.setObjectName('Expense')
+            h_layout = QHBoxLayout()
+            h_layout.setSpacing(5)
+            h_layout.setObjectName('Expense')
             # Initialize a QWidget to hold the layout
-            WidgetBox = QWidget()
-            WidgetBox.setObjectName('HorzWidget')
-            WidgetBox.setMinimumHeight(50)
-            WidgetBox.setMaximumHeight(50)
-            WidgetBox.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+            widget_box = QWidget()
+            widget_box.setObjectName('HorzWidget')
+            widget_box.setMinimumHeight(50)
+            widget_box.setMaximumHeight(50)
+            widget_box.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
 
             # Create Line Edits
             text = QLineEdit()
@@ -144,26 +143,26 @@ class DataWin(QMainWindow):
             text3.setPlaceholderText('Notes')
 
             # Add Line Edits to the horizontal box layout
-            HLayout.addWidget(text)
-            HLayout.addWidget(text2)
-            HLayout.addWidget(text3)
+            h_layout.addWidget(text)
+            h_layout.addWidget(text2)
+            h_layout.addWidget(text3)
 
             # Add Horizontal box layout to the Qwidget
-            WidgetBox.setLayout(HLayout)
+            widget_box.setLayout(h_layout)
 
             if layout is None:
                 # If no layout exists for the QFrame 'Expenses' create vertical layout
                 # and add widget
-                VBox = QVBoxLayout()
-                VBox.setSpacing(5)
-                VBox.addWidget(WidgetBox)
+                v_box = QVBoxLayout()
+                v_box.setSpacing(5)
+                v_box.addWidget(widget_box)
                 # Set Frame layout to the vertical layout just created
-                self.ui.Expenses.setLayout(VBox)
+                self.ui.Expenses.setLayout(v_box)
 
             else:
                 # If layout exists add Qwidget with horizontal layout and update
                 # frame layout.
-                layout.addWidget(WidgetBox)
+                layout.addWidget(widget_box)
                 layout.update()
             self.updateCount()
 
@@ -198,7 +197,7 @@ class DataWin(QMainWindow):
                 edits = expense.findChildren(QLineEdit)
                 expfile.write(edits[0].text() + ',' + edits[1].text() + ',' + edits[2].text() + '\n')
 
-    def Save_PDF(self):
+    def save_pdf(self):
         """Take a screenshot of the data GUI
         Send to the QPrinter or QPainter and set value as pdf
         check favorited links for possible examples.
@@ -211,7 +210,7 @@ class DataWin(QMainWindow):
         printer.setOutputFileName(self.listing + '.pdf')
         self.render(printer)
 
-    def To_Many(self):
+    def to_many(self):
         """Checks the amount of children called 'HorzWidget' from
         the 'Expenses' widget.
         Returns true if the number is 12 and false if less than 12.
@@ -223,11 +222,10 @@ class DataWin(QMainWindow):
         else:
             return False
 
-    def updateCount(self):
+    def update_count(self):
         """Gets the counter of expense horzwidgets and updates the
         counter label.
         """
 
         self.expenseCount += 1
         self.ui.Counter.setText(str(self.expenseCount) + ' / 12')
-

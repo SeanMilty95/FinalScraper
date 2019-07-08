@@ -1,3 +1,5 @@
+import datetime
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from DataGUI import *
@@ -24,7 +26,7 @@ class Window(QMainWindow):
     def button_listener(self):
         """Listens for button clicks."""
         # Calls functions when the designated pushButton is clicked
-        self.ui.pushButton_2.clicked.connect(self.addUnit)
+        self.ui.pushButton_2.clicked.connect(self.add_unit)
         self.ui.pushButton_5.clicked.connect(self.deleteUnit)
         self.ui.pushButton_3.clicked.connect(self.updateAll)
         self.ui.pushButton.clicked.connect(self.generate)
@@ -56,7 +58,7 @@ class Window(QMainWindow):
             layout.addWidget(QCheckBox(line[0]))
         layout.update()
 
-    def addUnit(self):
+    def add_unit(self):
         """Uses the info given by the user in the Text Edits to add
         a units information to the units.txt file.
         It will then call fill_unit_list() to add the new unit to
@@ -97,28 +99,27 @@ class Window(QMainWindow):
                 layout.addWidget(QCheckBox(unit_name))
                 layout.update()
 
-    def deleteUnit(self):
+    def delete_unit(self):
         """Deletes a unit from the units.txt file and
         removes its check box from the scroll area.
         """
         # Fill a list with QCheckBoxes. If a box is not checked add it to units.txt
         # This essential deletes the units that were checked.
-        checkBoxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
-        lines = []
+        check_boxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
         layout = self.ui.scrollAreaWidgetContents.layout()
         with open('units.txt', 'r') as f:
             lines = f.readlines()
         with open('units.txt', 'w') as f:
             for i in range(len(lines)):
                 # split_line = lines[i].split(' ')
-                if checkBoxes[i].isChecked() is False:
+                if check_boxes[i].isChecked() is False:
                     f.write(lines[i])
                 else:
-                    checkBoxes[i].setChecked(False)
-                    checkBoxes[i].hide()
+                    check_boxes[i].setChecked(False)
+                    check_boxes[i].hide()
                     layout.update()
 
-    def updateAll(self):
+    def update_all(self):
         """Gathers and updates all the unit info for the units
         that can be found in the units.txt file.
         """
@@ -135,12 +136,12 @@ class Window(QMainWindow):
         A data GUI is then created and shown to the user.
         """
         # Start the selenium code for the listing url for the checked listing
-        checkBoxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
+        check_boxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
         units = []
-        for i in range(len(checkBoxes)):
-            if checkBoxes[i].isChecked() is True:
+        for i in range(len(check_boxes)):
+            if check_boxes[i].isChecked() is True:
                 units.append(self.all_lines[i].split(' '))
-                checkBoxes[i].setChecked(False)
+                check_boxes[i].setChecked(False)
         self.get_info_for(units)
         # Generate the data GUI to present the data gathered from the listings html
         for unit in units:
@@ -152,12 +153,12 @@ class Window(QMainWindow):
         """Generates a data GUI window to show a user the stored
         information on a unit. Generates no new data.
         """
-        checkBoxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
+        check_boxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
         units = []
-        for i in range(len(checkBoxes)):
-            if checkBoxes[i].isChecked() is True:
+        for i in range(len(check_boxes)):
+            if check_boxes[i].isChecked() is True:
                 units.append(self.all_lines[i].split(' '))
-                checkBoxes[i].setChecked(False)
+                check_boxes[i].setChecked(False)
         for unit in units:
             data_win = DataWin(unit[0])
             data_win.show()
@@ -174,8 +175,6 @@ class Window(QMainWindow):
         opts.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                           "AppleWebKit/537.36 (KHTML, like Gecko) "
                           "Chrome/75.0.3770.100 Safari/537.36")
-        #opts.add_argument("--disable-infobars")
-        #driver = webdriver.Chrome(executable_path=r'chromedriver.exe')
         driver = webdriver.Chrome(chrome_options=opts)
         for unit in units:
             driver.get(unit[1])  # Goes to the url listed for the unit
@@ -189,12 +188,8 @@ class Window(QMainWindow):
 
             # Generally the functions find the data you are looking for
             # Check the file HelperFunctions to specifically see what they do
-            Month_List = Get_Month_Info(driver)
+            month_list = get_month_info(driver)
 
-            occupancy_rates = calc_monthly_occupancy_rate(Month_List)
-
-            tot_rev = get_total_revenue(Month_List)
-
-            gen_data_file(Month_List, occupancy_rates, tot_rev, unit[0])
+            gen_data_file(month_list, unit[0])
         # Closes chrome and everything it was using
         driver.quit()

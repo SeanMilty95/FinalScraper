@@ -1,5 +1,4 @@
 import time
-import datetime
 import csv
 from decimal import Decimal
 
@@ -33,7 +32,6 @@ def get_available_days(days):
         if av_stay is not None:
             day_num = days[i].find(class_='day-template__day').contents[0]
             day_rate = days[i].find(class_='day-template__rate')
-            day_rate2 = None
             if day_rate is not None and len(day_rate.contents) > 0:
                 day_rate2 = day_rate.contents[0]
             else:
@@ -129,22 +127,6 @@ def have_calendar_prices(available_days):
     return has
 
 
-def Add_New_Unit():
-    """Adds a new unit to the units list."""
-    # Add new unit info to units.txt. Creates the file if it does not exist
-    add_unit = input("Add new unit information yes or no? ")
-    print()
-    add_unit = add_unit.upper()
-    if add_unit == 'YES' or add_unit == 'Y':
-        unit_name = input("Enter unit name: ")
-        unit_url = input("Enter the url for the listing: ")
-        date = str(datetime.date.today())
-        unit_info = unit_name + ' ' + unit_url + ' ' + date + '\n'
-        url_file = open('units.txt', 'a+')
-        url_file.write(unit_info)
-        url_file.close()
-
-
 def print_current_unit_options(unit_list):
     """Prints the units that are stored in the units.txt file
     generated earlier in the code. These values are stored in
@@ -161,7 +143,7 @@ def print_current_unit_options(unit_list):
     return lines_list
 
 
-def gen_data_file(Month_List, occupancy_rates, tot_rev, selected_unit):
+def gen_data_file(month_list, selected_unit):
     """Creates or appends a file to hold the data for an individual unit.
     A list is created for each piece of information because it is
     gathered for four different months.
@@ -179,7 +161,7 @@ def gen_data_file(Month_List, occupancy_rates, tot_rev, selected_unit):
     rating = 0
 
     # Do maths for updated values
-    for month in Month_List:
+    for month in month_list:
         if new_given != month[2]:
             new_given = month[2]
         new_avail_days.append(month[5])
@@ -230,16 +212,15 @@ def gen_data_file(Month_List, occupancy_rates, tot_rev, selected_unit):
             writer.writerow(rows[i])
 
 
-def Get_Month_Info(driver):
+def get_month_info(driver):
     """Gathers data from the sites html and returns a list holding
     the data.
     The variable month_list holds a list of months and each month
     has its own 'packet' of data.
     """
     # Get the info from 4 calendars
-    Month_List = []
+    month_list = []
     given_rate = 0
-    cal_prices = False
     for i in range(4):
         if i > 0:
             next_calendar(driver)
@@ -267,9 +248,9 @@ def Get_Month_Info(driver):
         packet = (month_name, year, given_rate, average_rate,
                   cal_prices, available_days, booked_days,
                   past_days, revenue, rating)
-        Month_List.append(packet)
+        month_list.append(packet)
 
-    return Month_List
+    return month_list
 
 
 # may need to change and add to packet for Month_List
@@ -299,7 +280,6 @@ def union(list1, list2, list3):
 
 def month_revenue(booked, calced, avg, given):
     """Calculates the revenue generated in a month."""
-    revenue = 0
     num_days = len(booked)
     if calced:
         revenue = num_days * avg
@@ -310,12 +290,12 @@ def month_revenue(booked, calced, avg, given):
     return str(revenue)
 
 
-def get_total_revenue(Month_List):
+def get_total_revenue(month_list):
     """Calculates the total revenue for the months stored in
     the given parameter.
     """
     total = 0
-    for month in Month_List:
+    for month in month_list:
         total += int(month[8])
     return str(total)
 
