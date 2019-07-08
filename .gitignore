@@ -1,5 +1,7 @@
 #batch files
 *.bat
+#Notes files
+*Notes.txt
 
 #Data files generated from program testing
 *-data.txt
