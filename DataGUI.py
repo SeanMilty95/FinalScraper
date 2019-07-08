@@ -189,7 +189,7 @@ class DataWin(QMainWindow):
         """
 
         net_income_month = float(self.ui.Gross.text().strip('$'))  # Grab the gross income for the listing
-        #net_income_annual = float(self.ui.AnnualGross.text().strip('$'))
+        # net_income_annual = float(self.ui.AnnualGross.text().strip('$'))
         values = []
         # Grab all the Line Edit children from the QFrame 'Expenses'
         edits = self.ui.Expenses.findChildren(QLineEdit, 'expTot')
