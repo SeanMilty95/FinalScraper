@@ -14,6 +14,7 @@ class DataWin(QMainWindow):
         self.title = "Listing Data"
         self.listing = unit_name
         self.revenue = 0
+        self.annual_revenue = 0
         self.given_rate = 0
         self.booked_num = 0
         self.rating = 0
@@ -42,7 +43,8 @@ class DataWin(QMainWindow):
                 reader = csv.DictReader(csvfile)
                 for row in reader:
                     try:
-                        self.revenue += int(row['revenue'])
+                        self.revenue = int(row['revenue'])
+                        self.annual_revenue += int(row['revenue'])
                         self.booked_num += int(len(row['booked_days']))
                     except ValueError:
                         print("Not A Number")
@@ -61,10 +63,12 @@ class DataWin(QMainWindow):
         self.ui.Rating.setReadOnly(True)
         self.ui.Net.setReadOnly(True)
 
-        self.ui.Gross.setText(str(self.revenue))
+        self.ui.Gross.setText('$ ' + str(self.revenue))
+        self.ui.AnnualRevenue.setText('$ ' + str(self.annual_revenue))
         self.ui.Given.setText(str(self.given_rate))
         self.ui.Booked.setText(str(self.booked_num))
         self.ui.Rating.setText(str(self.rating + '/5'))
+        self.ui.month_name.setText(row['month'].upper())
 
         # Add any previous expenses if they exist
         count1 = 0
@@ -84,7 +88,7 @@ class DataWin(QMainWindow):
             # Populates a list with a list of strings that
             # will go into the line edit text fields
             for expense in expenses:
-                self.AddExpense()  # Adds the HorizWidget with the 3 line edits
+                self.add_expense()  # Adds the HorizWidget with the 3 line edits
                 new_exp.append(expense.strip('\n'))
                 for i in range(len(new_exp)):
                     lines = new_exp[i].split(',')
@@ -92,6 +96,7 @@ class DataWin(QMainWindow):
             # Fills the line edit text fields with the values
             # stored in the list named 'strings'
             widgets = self.ui.Expenses.findChildren(QWidget, 'HorzWidget')
+            self.ui.ExpenseError.hide()
             for widget in widgets:
                 edits = widget.findChildren(QLineEdit)
                 count1 += 1
@@ -114,7 +119,8 @@ class DataWin(QMainWindow):
         Has form layout(may need to delete in designer and add via python)
         if need to create via python dont forget to add placeholder text.
         """
-
+        self.ui.ExpenseError.setText("Don't Forget to save any new expenses!")
+        self.ui.ErrorEdit.hide()
         to_many = self.to_many()
         if to_many is False:
             # Grab layout if available
@@ -164,7 +170,7 @@ class DataWin(QMainWindow):
                 # frame layout.
                 layout.addWidget(widget_box)
                 layout.update()
-            self.updateCount()
+            self.update_count()
 
     def calc_net(self):
         """Loop through the lineEdits with integer values and find
@@ -173,24 +179,29 @@ class DataWin(QMainWindow):
         Set lineEdit text for net income.
         """
 
-        net_income = float(self.ui.Gross.text())  # Grab the gross income for the listing
+        net_income = float(self.ui.Gross.text().strip('$'))  # Grab the gross income for the listing
         values = []
         # Grab all the Line Edit children from the QFrame 'Expenses'
         edits = self.ui.Expenses.findChildren(QLineEdit, 'expTot')
         # Add all non blank values to a list if integer values
         for edit in edits:
             if edit.text() is not None and edit.text() != '':
-                values.append(float(edit.text()))
+                newval = edit.text().strip('$')
+                values.append(float(newval))
         # Subtract each value from the gross profit
         for value in values:
             net_income -= value
         # Set the Line Edit text equal to the net income
-        self.ui.Net.setText(str(net_income))
+        self.ui.Net.setText('$ ' + str(net_income))
+        if net_income == float(self.ui.Gross.text().strip('$')):
+            self.ui.ErrorEdit.show()
+            self.ui.ErrorEdit.setText("No Expenses used in calculations!")
 
     def save_expenses(self):
         """Saves the expenses created by the user for future reference
         stored in a text file named 'listing'expenses.txt.
         """
+        self.ui.ExpenseError.setText("Expenses Saved!")
         expenses = self.ui.Expenses.findChildren(QWidget, 'HorzWidget')
         with open(self.listing + 'expenses.txt', 'w+', newline='') as expfile:
             for expense in expenses:
@@ -202,7 +213,9 @@ class DataWin(QMainWindow):
         Send to the QPrinter or QPainter and set value as pdf
         check favorited links for possible examples.
         """
-
+        self.ui.ExpenseError.hide()
+        self.ui.ErrorEdit.hide()
+        
         printer = QPrinter(QPrinter.HighResolution)
         printer.setOutputFormat(QPrinter.PdfFormat)
         printer.setResolution(100)
