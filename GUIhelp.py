@@ -1,9 +1,7 @@
-import datetime
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from DataGUI import *
 
+from MonthGUI import *
 from HelperFunctions import *
 
 
@@ -42,11 +40,11 @@ class Window(QMainWindow):
         from the data.txt file. Adds a checkbox for each unit.
         """
         # Opens and reads from the list in units.txt
-        #in_file = open('units.txt', 'r')
-        #unit_list = in_file.readlines()
-        #self.all_lines = unit_list
-        #in_file.close()
-        unit_list =[]
+        # in_file = open('units.txt', 'r')
+        # unit_list = in_file.readlines()
+        # self.all_lines = unit_list
+        # in_file.close()
+        unit_list = []
         try:
             with open('units.txt', 'r+', newline='') as csvfile:
                 reader = csv.DictReader(csvfile)
@@ -63,8 +61,8 @@ class Window(QMainWindow):
             # Set the scrollArea layout to the layout that contains the check boxes
             self.ui.scrollAreaWidgetContents.setLayout(layout)
         for i in range(len(unit_list)):
-            #line = unit_list[i].split(' ')
-            #layout.addWidget(QCheckBox(line[0]))
+            # line = unit_list[i].split(' ')
+            # layout.addWidget(QCheckBox(line[0]))
             layout.addWidget(QCheckBox(unit_list[i]['name']))
         layout.update()
 
@@ -91,13 +89,6 @@ class Window(QMainWindow):
                 self.ui.lineEdit.clear()
                 self.ui.lineEdit_2.clear()
                 date = str(datetime.date.today())
-                """
-                unit_info = unit_name + ' ' + unit_url + ' ' + date + '\n'
-                url_file = open('units.txt', 'a+')
-                url_file.write(unit_info)
-                url_file.close()
-                """
-                append = False
                 rows = []
                 new_dict = {'name': unit_name, 'url': unit_url, 'date': date}
                 try:
@@ -108,19 +99,15 @@ class Window(QMainWindow):
                         rows.append(new_dict)
                 except IOError:
                     print("Units file does not exist")
-                    append = True
                     
                 with open('units.txt', 'w+', newline='') as csvfile:
-                    fieldnames= ['name', 'url', 'date']
+                    fieldnames = ['name', 'url', 'date']
                     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
                     writer.writeheader()
                     for i in range(len(rows)):
                         writer.writerow(rows[i])
 
                 # Maybe just add an append open and add to the end of file.
-
-                
-                
 
             # Opens and reads from the list in units.txt
             in_file = open('units.txt', 'r')
@@ -145,7 +132,7 @@ class Window(QMainWindow):
         layout = self.ui.scrollAreaWidgetContents.layout()
         lines = []
         with open('units.txt', 'r') as f:
-            #lines = f.readlines()
+            # lines = f.readlines()
             reader = csv.DictReader(f)
             for row in reader:
                 lines.append(row)
@@ -156,7 +143,7 @@ class Window(QMainWindow):
             for i in range(len(lines)):
                 # split_line = lines[i].split(' ')
                 if check_boxes[i].isChecked() is False:
-                    #f.write(lines[i])
+                    # f.write(lines[i])
                     writer.writerow(lines[i])
                 else:
                     check_boxes[i].setChecked(False)
@@ -188,8 +175,9 @@ class Window(QMainWindow):
                 check_boxes[i].setChecked(False)
         self.get_info_for(units)
         # Generate the data GUI to present the data gathered from the listings html
+        current_month = datetime.datetime.now()
         for unit in units:
-            data_win = DataWin(unit['name'])
+            data_win = DataWin(unit['name'], current_month.strftime("%B"))
             data_win.show()
             data_win.activateWindow()
 
@@ -205,7 +193,7 @@ class Window(QMainWindow):
                 units.append(self.all_lines[i])
                 check_boxes[i].setChecked(False)
         for unit in units:
-            data_win = DataWin(unit['name'])
+            data_win = MonthWin(unit['name'])
             data_win.show()
             data_win.activateWindow()
 
@@ -223,8 +211,6 @@ class Window(QMainWindow):
                           "Chrome/75.0.3770.100 Safari/537.36")
         driver = webdriver.Chrome(chrome_options=opts)
         for unit in units:
-            # print("Getting info for " + unit['name'] + " at " + unit['url'])
-            # Instead of a list create a dictionary with a key of url
             driver.get(unit['url'])  # Goes to the url listed for the unit
             # Right clicks and left clicks to inspect web page elements
             time.sleep(1)
