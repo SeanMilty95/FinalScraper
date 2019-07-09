@@ -42,7 +42,6 @@ class MonthWin(QMainWindow):
                 check_boxes[i].setCheckState(False)
 
         for month in month_list:
-            print(month)
             data_win = DataWin(self.unit_name, month)
             data_win.show()
             data_win.activateWindow()

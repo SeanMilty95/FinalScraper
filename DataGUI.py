@@ -1,5 +1,6 @@
 import csv
 import datetime
+import ast
 
 from PyQt5 import uic
 from PyQt5.QtPrintSupport import *
@@ -51,16 +52,13 @@ class DataWin(QMainWindow):
                 for row in reader:
                     self.annual_revenue += int(row['revenue'])
                     if row['month'] == self.month_to_see:
-                        try:
-                            self.revenue = int(row['revenue'])
-                            self.occupancy_rate = row['occupancy']
-                            self.booked_num += int(len(row['booked_days']))
-                        except ValueError:
-                            print("Not A Number")
-                        self.given_rate = row['given_rate']
-                        self.rating = row['rating']
-                        self.ui.month_name.setText(row['month'].upper())
-                        self.ui.NetMonth.setText(row['month'].upper())
+                        self.revenue = int(row['revenue'])
+                        self.occupancy_rate = row['occupancy']
+                        self.booked_num = len(ast.literal_eval(row['booked_days']))
+                    self.given_rate = row['given_rate']
+                    self.rating = row['rating']
+                    self.ui.month_name.setText(row['month'].upper())
+                    self.ui.NetMonth.setText(row['month'].upper())
         except IOError:
             self.ui.ErrorEdit.show()
             self.ui.ErrorEdit.setText("No data file found for this"
