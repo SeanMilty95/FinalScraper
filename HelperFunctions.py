@@ -92,7 +92,7 @@ def next_calendar(driver):
 
 
 def get_soup(driver):
-    """Grabs all the html from the vrbo listing webpage."""
+    """Grabs all the html from the vrbo listing web page."""
     # elem = driver.find_element_by_xpath("//*")
     # source_code = elem.get_attribute("innerHTML")#used to be outer
     source_code = driver.execute_script("return document.body.innerHTML")
@@ -164,22 +164,30 @@ def gen_data_file(month_list, selected_unit):
     occupancy = []
 
     # Do maths for updated values
-    for month in month_list:
-        if new_given != month[2]:
-            new_given = month[2]
-        new_avail_days.append(month[5])
-        new_booked_days.append(month[6])
-        new_revenue.append(month[8])
-        year.append(month[1])
-        month_name.append(month[0])
-        rating = month[9]
-        occupancy.append(month[10])
+    for i in range(12):
+        try:
+            if new_given != month_list[i][2]:
+                new_given = month_list[i][2]
+            new_avail_days.append(month_list[i][5])
+            new_booked_days.append(month_list[i][6])
+            new_revenue.append(month_list[i][8])
+            year.append(month_list[i][1])
+            month_name.append(month_list[i][0])
+            rating = month_list[i][9]
+            occupancy.append(month_list[i][10])
+        except IndexError:
+            new_avail_days.append('n/a')
+            new_booked_days.append('n/a')
+            new_revenue.append('n/a')
+            year.append(str(datetime.datetime.now().year))
+            month_name.append('n/a')
+            occupancy.append('')
 
     # Holds the rows from the reader
     rows = []
     new_dict = []
 
-    for i in range(4):
+    for i in range(12):
         new_dict.append(
             {'year': year[i], 'month': month_name[i], 'given_rate': new_given, 'available_days': new_avail_days[i],
              'booked_days': new_booked_days[i],
@@ -202,7 +210,7 @@ def gen_data_file(month_list, selected_unit):
 
     if append is False:
         for i in range(len(rows)):
-            for k in range(4):
+            for k in range(12):
                 if rows[i]['year'] == year[k] and rows[i]['month'] == month_name[k]:
                     rows[i] = new_dict[k]
                 elif i == len(rows):
@@ -210,7 +218,7 @@ def gen_data_file(month_list, selected_unit):
                 else:
                     continue
     else:
-        for i in range(4):
+        for i in range(12):
             rows.append(new_dict[i])
 
     with open('./' + selected_unit + '/' + current_year + '.txt', 'w+', newline='') as csvfile:
@@ -230,7 +238,7 @@ def get_month_info(driver):
     # Get the info from 4 calendars
     month_list = []
     given_rate = 0
-    for i in range(4):
+    for i in range(5):
         if i > 0:
             next_calendar(driver)
         soup = get_soup(driver)

@@ -8,11 +8,12 @@ from win32api import GetSystemMetrics
 
 
 class DataWin(QMainWindow):
-    def __init__(self, unit_name):
+    def __init__(self, unit_name, month):
         super(DataWin, self).__init__()
         # Load the GUI created in the designer program
         self.ui = uic.loadUi('Data_Page.ui', self)
         self.title = "Listing Data"
+        self.month_to_see = month
         self.listing = unit_name
         self.revenue = 0
         self.annual_revenue = 0
@@ -45,17 +46,18 @@ class DataWin(QMainWindow):
             with open('./' + self.listing + '/' + current_year + '.txt', 'r', newline='') as csvfile:
                 reader = csv.DictReader(csvfile)
                 for row in reader:
-                    try:
-                        self.revenue = int(row['revenue'])
-                        self.occupancy_rate = row['occupancy']
-                        self.annual_revenue += int(row['revenue'])
-                        self.booked_num += int(len(row['booked_days']))
-                    except ValueError:
-                        print("Not A Number")
-                    self.given_rate = row['given_rate']
-                    self.rating = row['rating']
-                    self.ui.month_name.setText(row['month'].upper())
-                    self.ui.NetMonth.setText(row['month'].upper())
+                    if row['month'] == self.month_to_see:
+                        try:
+                            self.revenue = int(row['revenue'])
+                            self.occupancy_rate = row['occupancy']
+                            self.annual_revenue += int(row['revenue'])
+                            self.booked_num += int(len(row['booked_days']))
+                        except ValueError:
+                            print("Not A Number")
+                        self.given_rate = row['given_rate']
+                        self.rating = row['rating']
+                        self.ui.month_name.setText(row['month'].upper())
+                        self.ui.NetMonth.setText(row['month'].upper())
         except IOError:
             self.ui.ErrorEdit.show()
             self.ui.ErrorEdit.setText("No data file found for this"
