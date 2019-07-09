@@ -69,7 +69,7 @@ class DataWin(QMainWindow):
         self.ui.AnnualRevenue.setText('$ ' + str(self.annual_revenue))
         self.ui.Given.setText(str(self.given_rate))
         self.ui.Booked.setText(str(self.booked_num))
-        self.ui.Rating.setText(str(self.rating) + '/5')
+        self.ui.Rating.setText(str(self.rating + '/5'))
 
         try:
             with open(self.listing + "Notes.txt", 'r', newline='') as sumfile:
