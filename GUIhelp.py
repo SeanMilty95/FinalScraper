@@ -1,7 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-from DataGUI import *
 from MonthGUI import *
 from HelperFunctions import *
 

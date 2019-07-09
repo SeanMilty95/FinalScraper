@@ -4,6 +4,8 @@ import datetime
 from PyQt5 import uic
 from PyQt5.QtPrintSupport import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtCore import QUrl
 from win32api import GetSystemMetrics
 
 
@@ -15,6 +17,7 @@ class DataWin(QMainWindow):
         self.title = "Listing Data"
         self.month_to_see = month
         self.listing = unit_name
+        self.url_string = ''
         self.revenue = 0
         self.annual_revenue = 0
         self.given_rate = 0
@@ -77,6 +80,15 @@ class DataWin(QMainWindow):
         self.ui.Occupancy.setText(str(self.occupancy_rate))
         self.ui.Rating.setText(str(self.rating) + '/5')
 
+        # Open units.txt for hyperlink
+        with open('units.txt', 'r', newline='') as unit_file:
+            reader = csv.DictReader(unit_file)
+            for row in reader:
+                if row['name'] == self.listing:
+                    self.ui.HyperLink.setText('<a href=' + row['url'] + '>' + self.listing + '</a>')
+                    self.ui.HyperLink.setOpenExternalLinks(True)
+                    self.url_string = row['url']
+
         try:
             with open('./' + self.listing + '/' + 'Notes.txt', 'r', newline='') as sumfile:
                 summary_notes = sumfile.read()
@@ -128,6 +140,8 @@ class DataWin(QMainWindow):
         self.ui.pushButton_3.clicked.connect(self.save_pdf)
         self.ui.save_exp.clicked.connect(self.save_expenses)
         self.ui.SaveNotes.clicked.connect(self.save_notes)
+
+        self.HyperLink.linkActivated.connect(self.link)
 
     def add_expense(self):
         """Add 3 lineEdits to the Exspenses QWidget.
@@ -262,3 +276,6 @@ class DataWin(QMainWindow):
 
         self.expenseCount += 1
         self.ui.Counter.setText(str(self.expenseCount) + ' / 12')
+
+    def link(self):
+        QDesktopServices.openUrl(QUrl(self.url_string))
