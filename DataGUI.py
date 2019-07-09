@@ -1,4 +1,5 @@
 import csv
+import datetime
 
 from PyQt5 import uic
 from PyQt5.QtPrintSupport import *
@@ -17,6 +18,7 @@ class DataWin(QMainWindow):
         self.annual_revenue = 0
         self.given_rate = 0
         self.booked_num = 0
+        self.occupancy_rate = 0
         self.rating = 0
         self.expenseCount = 0
         self.width = GetSystemMetrics(0) / 3.5
@@ -28,6 +30,7 @@ class DataWin(QMainWindow):
         """Open the data file that contains the csv objects read from
         there and populate the data GUI.
         """
+        current_year = str(datetime.datetime.now().year)
         self.ui.move(self.width - 350, self.height)
         # Add Listing name to data file
         self.ui.setWindowTitle(self.listing + ' Data Page')
@@ -39,11 +42,12 @@ class DataWin(QMainWindow):
 
         # Gather data from file
         try:
-            with open(self.listing + 'Specs.txt', 'r', newline='') as csvfile:
+            with open('./' + self.listing + '/' + current_year + '.txt', 'r', newline='') as csvfile:
                 reader = csv.DictReader(csvfile)
                 for row in reader:
                     try:
                         self.revenue = int(row['revenue'])
+                        self.occupancy_rate = row['occupancy']
                         self.annual_revenue += int(row['revenue'])
                         self.booked_num += int(len(row['booked_days']))
                     except ValueError:
@@ -61,19 +65,19 @@ class DataWin(QMainWindow):
         # Populate data page with the gathered data
         self.ui.Gross.setReadOnly(True)
         self.ui.Given.setReadOnly(True)
-        self.ui.Booked.setReadOnly(True)
+        self.ui.Occupancy.setReadOnly(True)
         self.ui.Rating.setReadOnly(True)
         self.ui.Net.setReadOnly(True)
 
         self.ui.Gross.setText('$ ' + str(self.revenue))
         self.ui.AnnualRevenue.setText('$ ' + str(self.annual_revenue))
         self.ui.Given.setText(str(self.given_rate))
-        self.ui.Booked.setText(str(self.booked_num))
+        self.ui.Occupancy.setText(str(self.occupancy_rate))
         self.ui.Rating.setText(str(self.rating) + '/5')
 
         try:
-            with open(self.listing + "Notes.txt", 'r', newline='') as sumfile:
-                summary_notes = "Summary Notes: " + sumfile.read()
+            with open('./' + self.listing + '/' + 'Notes.txt', 'r', newline='') as sumfile:
+                summary_notes = sumfile.read()
         except IOError:
             summary_notes = 'Summary Notes: '
         self.ui.SumNotes.setPlainText(summary_notes)
@@ -83,7 +87,7 @@ class DataWin(QMainWindow):
         add = True
         # Open the expenses file
         try:
-            with open(self.listing + 'expenses.txt', 'r', newline='') as expfile:
+            with open('./' + self.listing + '/' + 'expenses.txt', 'r', newline='') as expfile:
                 expenses = expfile.readlines()
         except IOError:
             self.ui.ExpenseError.show()
@@ -196,8 +200,8 @@ class DataWin(QMainWindow):
         # Add all non blank values to a list if integer values
         for edit in edits:
             if edit.text() is not None and edit.text() != '':
-                newval = edit.text().strip('$')
-                values.append(float(newval))
+                new_val = edit.text().strip('$')
+                values.append(float(new_val))
         # Subtract each value from the gross profit
         for value in values:
             net_income_month -= value
@@ -213,7 +217,7 @@ class DataWin(QMainWindow):
         """
         self.ui.ExpenseError.setText("Expenses Saved!")
         expenses = self.ui.Expenses.findChildren(QWidget, 'HorzWidget')
-        with open(self.listing + 'expenses.txt', 'w+', newline='') as expfile:
+        with open('./' + self.listing + '/' + 'expenses.txt', 'w+', newline='') as expfile:
             for expense in expenses:
                 edits = expense.findChildren(QLineEdit)
                 expfile.write(edits[0].text() + ',' + edits[1].text() + ',' + edits[2].text() + '\n')
@@ -230,7 +234,7 @@ class DataWin(QMainWindow):
         printer.setOutputFormat(QPrinter.PdfFormat)
         printer.setResolution(100)
 
-        printer.setOutputFileName(self.listing + '.pdf')
+        printer.setOutputFileName('./' + self.listing + '/' + '.pdf')
         self.render(printer)
 
     def to_many(self):
@@ -246,7 +250,7 @@ class DataWin(QMainWindow):
             return False
 
     def save_notes(self):
-        with open(self.listing + "Notes.txt", 'w+', newline='') as sumfile:
+        with open('./' + self.listing + '/' + 'Notes.txt', 'w+', newline='') as sumfile:
             sumfile.write(self.ui.SumNotes.toPlainText())
 
     def update_count(self):

@@ -1,5 +1,7 @@
 import time
 import csv
+import os
+import datetime
 from decimal import Decimal
 
 from selenium.webdriver.common.action_chains import ActionChains
@@ -159,6 +161,7 @@ def gen_data_file(month_list, selected_unit):
     month_name = []
     new_given = 0
     rating = 0
+    occupancy = []
 
     # Do maths for updated values
     for month in month_list:
@@ -170,6 +173,7 @@ def gen_data_file(month_list, selected_unit):
         year.append(month[1])
         month_name.append(month[0])
         rating = month[9]
+        occupancy.append(month[10])
 
     # Holds the rows from the reader
     rows = []
@@ -179,14 +183,19 @@ def gen_data_file(month_list, selected_unit):
         new_dict.append(
             {'year': year[i], 'month': month_name[i], 'given_rate': new_given, 'available_days': new_avail_days[i],
              'booked_days': new_booked_days[i],
-             'revenue': new_revenue[i], 'rating': rating})
+             'revenue': new_revenue[i], 'rating': rating, 'occupancy': occupancy[i]})
 
+    current_year = str(datetime.datetime.now().year)
+    if os.path.exists('./' + selected_unit) is False and os.path.isdir('./' + selected_unit) is False:
+        try:
+            os.mkdir('./' + selected_unit)
+        except OSError:
+            print("Cannot create directory!")
     try:
-        with open(selected_unit + 'Specs.txt', 'r+', newline='') as csvfile:
+        with open('./' + selected_unit + '/' + current_year + '.txt', 'r+', newline='') as csvfile:
             reader = csv.DictReader(csvfile)
             for row in reader:
                 rows.append(row)
-
     except IOError:
         print("Data File Does Not Exist")
         append = True
@@ -204,8 +213,8 @@ def gen_data_file(month_list, selected_unit):
         for i in range(4):
             rows.append(new_dict[i])
 
-    with open(selected_unit + 'Specs.txt', 'w+', newline='') as csvfile:
-        fieldnames = ['month', 'year', 'given_rate', 'available_days', 'booked_days', 'revenue', 'rating']
+    with open('./' + selected_unit + '/' + current_year + '.txt', 'w+', newline='') as csvfile:
+        fieldnames = ['month', 'year', 'given_rate', 'available_days', 'booked_days', 'revenue', 'rating', 'occupancy']
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
         writer.writeheader()
         for i in range(len(rows)):
@@ -245,28 +254,27 @@ def get_month_info(driver):
             given_rate = get_avg_listed_rate(soup)
         revenue = month_revenue(booked_days, cal_prices,
                                 average_rate, given_rate)
+        occupancy = calc_monthly_occupancy_rate(available_days,
+                                                booked_days,
+                                                past_days)
         packet = (month_name, year, given_rate, average_rate,
                   cal_prices, available_days, booked_days,
-                  past_days, revenue, rating)
+                  past_days, revenue, rating, occupancy)
         month_list.append(packet)
 
     return month_list
 
 
 # may need to change and add to packet for Month_List
-def calc_monthly_occupancy_rate(month_list):
-    """Calculates the occupancy rate for each month stored
-    in the parameter month_list.
-    """
-    occupancy_rates = []
-    for month in month_list:
-        days_occupied = len(month[6])
-        all_days = union(month[5], month[6], month[7])
-        total_days = len(all_days)
-        occupancy_rate = Decimal((days_occupied / total_days) * 100)
-        occupancy_rate = round(occupancy_rate, 1)
-        occupancy_rates.append(str(occupancy_rate))
-    return occupancy_rates
+def calc_monthly_occupancy_rate(av_days, book_days, past):
+    """Calculates the occupancy rate for a month"""
+    days_occupied = len(book_days)
+    all_days = union(av_days, book_days, past)
+    total_days = len(all_days)
+    occupancy_rate = Decimal((days_occupied / total_days) * 100)
+    occupancy_rate = round(occupancy_rate, 1)
+    occupancy_rate = (str(occupancy_rate))
+    return occupancy_rate
 
 
 def union(list1, list2, list3):

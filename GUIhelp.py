@@ -91,12 +91,6 @@ class Window(QMainWindow):
                 self.ui.lineEdit.clear()
                 self.ui.lineEdit_2.clear()
                 date = str(datetime.date.today())
-                """
-                unit_info = unit_name + ' ' + unit_url + ' ' + date + '\n'
-                url_file = open('units.txt', 'a+')
-                url_file.write(unit_info)
-                url_file.close()
-                """
                 rows = []
                 new_dict = {'name': unit_name, 'url': unit_url, 'date': date}
                 try:
@@ -218,8 +212,6 @@ class Window(QMainWindow):
                           "Chrome/75.0.3770.100 Safari/537.36")
         driver = webdriver.Chrome(chrome_options=opts)
         for unit in units:
-            # print("Getting info for " + unit['name'] + " at " + unit['url'])
-            # Instead of a list create a dictionary with a key of url
             driver.get(unit['url'])  # Goes to the url listed for the unit
             # Right clicks and left clicks to inspect web page elements
             time.sleep(1)

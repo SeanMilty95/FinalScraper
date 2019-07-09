@@ -1,2 +1,0 @@
-name,url,date
-hailiki 7c,https://www.vrbo.com/417938,2019-07-08
