@@ -75,7 +75,7 @@ class DataWin(QMainWindow):
         self.ui.Net.setReadOnly(True)
 
         self.ui.Gross.setText('$ ' + str(self.revenue))
-        self.ui.AnnualRevenue.setText('$ ' + str(self.annual_revenue))
+        self.ui.AnnualRevenue.setText('$ ' + str(self.annual_revenue*3))
         self.ui.Given.setText(str(self.given_rate))
         self.ui.Occupancy.setText(str(self.occupancy_rate))
         self.ui.Rating.setText(str(self.rating) + '/5')
