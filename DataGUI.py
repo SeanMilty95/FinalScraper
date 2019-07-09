@@ -49,11 +49,11 @@ class DataWin(QMainWindow):
             with open('./' + self.listing + '/' + current_year + '.txt', 'r', newline='') as csvfile:
                 reader = csv.DictReader(csvfile)
                 for row in reader:
+                    self.annual_revenue += int(row['revenue'])
                     if row['month'] == self.month_to_see:
                         try:
                             self.revenue = int(row['revenue'])
                             self.occupancy_rate = row['occupancy']
-                            self.annual_revenue += int(row['revenue'])
                             self.booked_num += int(len(row['booked_days']))
                         except ValueError:
                             print("Not A Number")
@@ -207,7 +207,7 @@ class DataWin(QMainWindow):
         Subtract that sum from the Gross income value found elsewhere.
         Set lineEdit text for net income.
         """
-
+        month_expense = 0
         net_income_month = float(self.ui.Gross.text().strip('$'))  # Grab the gross income for the listing
         # net_income_annual = float(self.ui.AnnualGross.text().strip('$'))
         values = []
@@ -221,11 +221,14 @@ class DataWin(QMainWindow):
         # Subtract each value from the gross profit
         for value in values:
             net_income_month -= value
+            month_expense += value
         # Set the Line Edit text equal to the net income
         self.ui.Net.setText('$ ' + str(net_income_month))
         if net_income_month == float(self.ui.Gross.text().strip('$')):
             self.ui.ErrorEdit.show()
             self.ui.ErrorEdit.setText("No Expenses used in calculations!")
+        year_expense = month_expense * 12
+        self.ui.AnnualNet.setText(str(year_expense))
 
     def save_expenses(self):
         """Saves the expenses created by the user for future reference

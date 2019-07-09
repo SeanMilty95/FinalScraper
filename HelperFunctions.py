@@ -178,7 +178,7 @@ def gen_data_file(month_list, selected_unit):
         except IndexError:
             new_avail_days.append('n/a')
             new_booked_days.append('n/a')
-            new_revenue.append('n/a')
+            new_revenue.append('0')
             year.append(str(datetime.datetime.now().year))
             month_name.append('n/a')
             occupancy.append('')
@@ -238,7 +238,7 @@ def get_month_info(driver):
     # Get the info from 4 calendars
     month_list = []
     given_rate = 0
-    for i in range(5):
+    for i in range(4):
         if i > 0:
             next_calendar(driver)
         soup = get_soup(driver)
