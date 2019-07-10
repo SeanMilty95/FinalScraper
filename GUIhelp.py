@@ -187,12 +187,15 @@ class Window(QMainWindow):
         units = []
         for i in range(len(check_boxes)):
             if check_boxes[i].isChecked() is True:
-                units.append(self.all_lines[i])
+                #units.append(self.all_lines[i])
+                data_win = MonthWin(check_boxes[i].text())
+                data_win.show()
+                data_win.activateWindow()
                 check_boxes[i].setChecked(False)
-        for unit in units:
-            data_win = MonthWin(unit['name'])
-            data_win.show()
-            data_win.activateWindow()
+        #for unit in units:
+            #data_win = MonthWin(unit['name'])
+            #data_win.show()
+            #data_win.activateWindow()
 
     def get_info_for(self, units):
         """Starts the webdriver process and sends the needed information
