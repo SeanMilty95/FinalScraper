@@ -55,10 +55,10 @@ class DataWin(QMainWindow):
                         self.revenue = int(row['revenue'])
                         self.occupancy_rate = row['occupancy']
                         self.booked_num = len(ast.literal_eval(row['booked_days']))
+                        self.ui.month_name.setText(row['month'].upper())
+                        self.ui.NetMonth.setText(row['month'].upper())
                     self.given_rate = row['given_rate']
                     self.rating = row['rating']
-                    self.ui.month_name.setText(row['month'].upper())
-                    self.ui.NetMonth.setText(row['month'].upper())
         except IOError:
             self.ui.ErrorEdit.show()
             self.ui.ErrorEdit.setText("No data file found for this"

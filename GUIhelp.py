@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
 from MonthGUI import *
+from EditGUI import *
 from HelperFunctions import *
 
 
@@ -29,6 +30,7 @@ class Window(QMainWindow):
         self.ui.pushButton_3.clicked.connect(self.update_all)
         self.ui.pushButton.clicked.connect(self.generate)
         self.ui.show_data.clicked.connect(self.show_data_page)
+        self.ui.EditUnit.clicked.connect(self.edit_unit_info)
 
     def hide_error_boxes(self):
         """Hides the Text Edit used to display error messages."""
@@ -39,11 +41,6 @@ class Window(QMainWindow):
         """Fills the scroll area with the units that are available
         from the data.txt file. Adds a checkbox for each unit.
         """
-        # Opens and reads from the list in units.txt
-        # in_file = open('units.txt', 'r')
-        # unit_list = in_file.readlines()
-        # self.all_lines = unit_list
-        # in_file.close()
         unit_list = []
         try:
             with open('units.txt', 'r+', newline='') as csvfile:
@@ -61,8 +58,6 @@ class Window(QMainWindow):
             # Set the scrollArea layout to the layout that contains the check boxes
             self.ui.scrollAreaWidgetContents.setLayout(layout)
         for i in range(len(unit_list)):
-            # line = unit_list[i].split(' ')
-            # layout.addWidget(QCheckBox(line[0]))
             layout.addWidget(QCheckBox(unit_list[i]['name']))
         layout.update()
 
@@ -173,6 +168,8 @@ class Window(QMainWindow):
             if check_boxes[i].isChecked() is True:
                 units.append(self.all_lines[i])
                 check_boxes[i].setChecked(False)
+                # The only thing about the ppl is
+                # that they be cray
         self.get_info_for(units)
         # Generate the data GUI to present the data gathered from the listings html
         current_month = datetime.datetime.now()
@@ -226,3 +223,12 @@ class Window(QMainWindow):
             gen_data_file(month_list, unit['name'])
         # Closes chrome and everything it was using
         driver.quit()
+
+    def edit_unit_info(self):
+        check_boxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
+        for box in check_boxes:
+            if box.isChecked():
+                edit_win = EditWindow(box.text())
+                edit_win.show()
+                edit_win.activateWindow()
+                box.setText(edit_win.new_name)
