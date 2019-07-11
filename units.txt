@@ -1,6 +1,5 @@
 name,url,date
 building 8,https://www.vrbo.com/314430,2019-07-08
-The 7C,https://www.vrbo.com/417938,2019-07-10
+hailiki 7c,https://www.vrbo.com/417938,2019-07-08
 19E,https://www.vrbo.com/405373,2019-07-10
-6c,https://www.vrbo.com/676861,2019-07-08
 Hali'i Kai unit 16C,https://www.vrbo.com/477467,2019-07-08

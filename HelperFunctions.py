@@ -253,7 +253,6 @@ def get_month_info(driver):
         month_name, year = find_month(soup)
         rating = find_rating(soup)
         booked_days = get_booked_days(days)
-        print(len(booked_days))
         past_days = get_past_days(days)
         if cal_prices:
             average_rate = calculate_avg(available_days)
