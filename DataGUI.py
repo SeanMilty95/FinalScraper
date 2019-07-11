@@ -1,6 +1,7 @@
 import csv
 import datetime
 import ast
+import time
 
 from PyQt5 import uic
 from PyQt5.QtPrintSupport import *
@@ -245,11 +246,11 @@ class DataWin(QMainWindow):
     def save_pdf(self):
         """Take a screenshot of the data GUI
         Send to the QPrinter or QPainter and set value as pdf
-        check favorited links for possible examples.
+        check favorites link for possible examples.
         """
-        self.ui.ExpenseError.hide()
-        self.ui.ErrorEdit.hide()
-        
+        self.ui.ExpenseError.clear()
+        self.ui.ExpenseError.setText("PDF saved!")
+
         printer = QPrinter(QPrinter.HighResolution)
         printer.setOutputFormat(QPrinter.PdfFormat)
         printer.setResolution(100)
