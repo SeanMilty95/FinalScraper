@@ -26,6 +26,7 @@ class DataWin(QMainWindow):
         self.occupancy_rate = 0
         self.rating = 0
         self.expenseCount = 0
+        self.updated_date = ''
         self.width = GetSystemMetrics(0) / 3.5
         self.height = GetSystemMetrics(1) / 20
         self.input_data()
@@ -86,6 +87,8 @@ class DataWin(QMainWindow):
                     self.ui.HyperLink.setText('<a href=' + row['url'] + '>' + self.listing + '</a>')
                     self.ui.HyperLink.setOpenExternalLinks(True)
                     self.url_string = row['url']
+                    self.updated_date = row['date']
+        self.ui.UpdatedDate.setText(self.updated_date)
 
         try:
             with open('./' + self.listing + '/' + 'Notes.txt', 'r', newline='') as sumfile:
@@ -251,7 +254,7 @@ class DataWin(QMainWindow):
         printer.setOutputFormat(QPrinter.PdfFormat)
         printer.setResolution(100)
 
-        printer.setOutputFileName('./' + self.listing + '/' + '.pdf')
+        printer.setOutputFileName('./PDF/' + self.listing + '.pdf')
         self.render(printer)
 
     def to_many(self):

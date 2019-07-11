@@ -93,8 +93,6 @@ def next_calendar(driver):
 
 def get_soup(driver):
     """Grabs all the html from the vrbo listing web page."""
-    # elem = driver.find_element_by_xpath("//*")
-    # source_code = elem.get_attribute("innerHTML")#used to be outer
     source_code = driver.execute_script("return document.body.innerHTML")
     soup = BeautifulSoup(source_code, 'html.parser')
     return soup

@@ -127,7 +127,6 @@ class Window(QMainWindow):
         layout = self.ui.scrollAreaWidgetContents.layout()
         lines = []
         with open('units.txt', 'r') as f:
-            # lines = f.readlines()
             reader = csv.DictReader(f)
             for row in reader:
                 lines.append(row)
@@ -136,9 +135,7 @@ class Window(QMainWindow):
             writer = csv.DictWriter(f, fieldnames=fieldnames)
             writer.writeheader()
             for i in range(len(lines)):
-                # split_line = lines[i].split(' ')
                 if check_boxes[i].isChecked() is False:
-                    # f.write(lines[i])
                     writer.writerow(lines[i])
                 else:
                     check_boxes[i].setChecked(False)
@@ -184,18 +181,12 @@ class Window(QMainWindow):
         """
         self.ui.move(self.width + 500, self.height)
         check_boxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
-        units = []
         for i in range(len(check_boxes)):
             if check_boxes[i].isChecked() is True:
-                #units.append(self.all_lines[i])
                 data_win = MonthWin(check_boxes[i].text())
                 data_win.show()
                 data_win.activateWindow()
                 check_boxes[i].setChecked(False)
-        #for unit in units:
-            #data_win = MonthWin(unit['name'])
-            #data_win.show()
-            #data_win.activateWindow()
 
     def get_info_for(self, units):
         """Starts the webdriver process and sends the needed information
