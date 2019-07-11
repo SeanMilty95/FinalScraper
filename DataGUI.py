@@ -255,7 +255,7 @@ class DataWin(QMainWindow):
         printer.setOutputFormat(QPrinter.PdfFormat)
         printer.setResolution(100)
 
-        printer.setOutputFileName('./PDF/' + self.listing + '.pdf')
+        printer.setOutputFileName('./PDF/' + self.listing + self.month_to_see + '.pdf')
         self.render(printer)
 
     def to_many(self):
