@@ -1,7 +1,7 @@
 import csv
 import datetime
 import ast
-import time
+import os
 
 from PyQt5 import uic
 from PyQt5.QtPrintSupport import *
@@ -258,6 +258,8 @@ class DataWin(QMainWindow):
         printer.setOutputFileName('./PDF/' + self.listing + self.month_to_see + '.pdf')
         self.render(printer)
 
+        self.open_pdf()
+
     def to_many(self):
         """Checks the amount of children called 'HorzWidget' from
         the 'Expenses' widget.
@@ -284,3 +286,11 @@ class DataWin(QMainWindow):
 
     def link(self):
         QDesktopServices.openUrl(QUrl(self.url_string))
+
+    def open_pdf(self):
+        current_dir = os.getcwd()
+        try:
+            os.startfile(current_dir + '/PDF/' + self.listing + self.month_to_see + '.pdf')
+        except FileNotFoundError:
+            file_path = current_dir + '/PDF/' + self.listing + self.month_to_see + '.pdf'
+            print('{0} : Could Not be Found!'.format(file_path))

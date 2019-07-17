@@ -3,3 +3,4 @@ building 8,https://www.vrbo.com/314430,2019-07-08
 hailiki 7c,https://www.vrbo.com/417938,2019-07-08
 19E,https://www.vrbo.com/405373,2019-07-10
 Hali'i Kai unit 16C,https://www.vrbo.com/477467,2019-07-08
+Test unit,wrong url lol,2019-07-17

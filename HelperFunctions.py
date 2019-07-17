@@ -245,7 +245,11 @@ def get_month_info(driver):
             reload_page()
             soup = get_soup(driver)
             month_table = soup.find(class_='month-table')
-        days = month_table.find_all(class_='day')
+        try:
+            days = month_table.find_all(class_='day')
+        except AttributeError:
+            print("Could not grab correct html.")
+            break
         available_days = get_available_days(days)
         cal_prices = have_calendar_prices(available_days)
         month_name, year = find_month(soup)
@@ -325,7 +329,11 @@ def reload_page():
 def find_rating(soup):
     """Finds and returns the average rating of a unit."""
     rating_div = soup.find(class_="review-summary__header-ratings-average")
-    contents = rating_div.contents
+    try:
+        contents = rating_div.contents
+    except AttributeError:
+        print("Could not find rating")
+        return 0
     contents2 = contents[0].split('/')
     rating = contents2[0]
     return rating

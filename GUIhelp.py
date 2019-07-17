@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.common.exceptions import WebDriverException
 
 from MonthGUI import *
 from EditGUI import *
@@ -202,7 +203,12 @@ class Window(QMainWindow):
                           "Chrome/75.0.3770.100 Safari/537.36")
         driver = webdriver.Chrome(chrome_options=opts)
         for unit in units:
-            driver.get(unit['url'])  # Goes to the url listed for the unit
+            try:
+                driver.get(unit['url'])  # Goes to the url listed for the unit
+            except TypeError:
+                print("Invalid url!")
+            except WebDriverException:
+                print("Invalid url!")
             # Right clicks and left clicks to inspect web page elements
             time.sleep(1)
             actions = ActionChains(driver)

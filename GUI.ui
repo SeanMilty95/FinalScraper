@@ -15,14 +15,7 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="4" column="4">
-     <widget class="QLineEdit" name="lineEdit_2">
-      <property name="clearButtonEnabled">
-       <bool>true</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="1" rowspan="6">
+    <item row="0" column="2" rowspan="6">
      <widget class="QScrollArea" name="scrollArea">
       <property name="frameShape">
        <enum>QFrame::Box</enum>
@@ -38,21 +31,21 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>218</width>
+         <width>202</width>
          <height>208</height>
         </rect>
        </property>
       </widget>
      </widget>
     </item>
-    <item row="1" column="3" rowspan="2">
+    <item row="1" column="4" rowspan="2">
      <widget class="QPushButton" name="pushButton_2">
       <property name="text">
        <string>Add New</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="2">
+    <item row="0" column="3">
      <widget class="QPushButton" name="pushButton">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
@@ -65,14 +58,21 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="2">
+    <item row="1" column="3">
      <widget class="QPushButton" name="show_data">
       <property name="text">
        <string>Show Data</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="0">
+    <item row="5" column="3">
+     <widget class="QPushButton" name="pushButton_5">
+      <property name="text">
+       <string>Delete</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
      <widget class="QLabel" name="label">
       <property name="font">
        <font>
@@ -85,49 +85,21 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="4">
+    <item row="1" column="5">
      <widget class="QLabel" name="label_2">
       <property name="text">
        <string>Unit Name</string>
       </property>
      </widget>
     </item>
-    <item row="0" column="3" colspan="2">
+    <item row="0" column="4" colspan="2">
      <widget class="QLineEdit" name="ErrorEdit">
       <property name="clearButtonEnabled">
        <bool>false</bool>
       </property>
      </widget>
     </item>
-    <item row="5" column="2">
-     <widget class="QPushButton" name="pushButton_5">
-      <property name="text">
-       <string>Delete</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="4">
-     <widget class="QLabel" name="label_3">
-      <property name="text">
-       <string>Url Address</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="4">
-     <widget class="QLineEdit" name="lineEdit">
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QPushButton" name="pushButton_3">
-      <property name="text">
-       <string>Update All</string>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="1">
+    <item row="6" column="2">
      <widget class="QPushButton" name="EditUnit">
       <property name="font">
        <font>
@@ -138,6 +110,66 @@
        <string>Edit Unit Info</string>
       </property>
      </widget>
+    </item>
+    <item row="2" column="5">
+     <widget class="QLineEdit" name="lineEdit">
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="5">
+     <widget class="QLabel" name="label_3">
+      <property name="text">
+       <string>Url Address</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="3">
+     <widget class="QPushButton" name="pushButton_3">
+      <property name="text">
+       <string>Update All</string>
+      </property>
+     </widget>
+    </item>
+    <item row="4" column="5">
+     <widget class="QLineEdit" name="lineEdit_2">
+      <property name="clearButtonEnabled">
+       <bool>true</bool>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <spacer name="horizontalSpacer">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>10</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="2" column="6">
+     <spacer name="horizontalSpacer_2">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Fixed</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>10</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
     </item>
    </layout>
   </widget>
