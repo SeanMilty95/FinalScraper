@@ -206,9 +206,9 @@ class Window(QMainWindow):
             try:
                 driver.get(unit['url'])  # Goes to the url listed for the unit
             except TypeError:
-                print("Invalid url!")
+                print("Invalid url! Type")
             except WebDriverException:
-                print("Invalid url!")
+                print("Invalid url! WebDriver")
             # Right clicks and left clicks to inspect web page elements
             time.sleep(1)
             actions = ActionChains(driver)

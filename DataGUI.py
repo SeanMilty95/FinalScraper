@@ -244,7 +244,7 @@ class DataWin(QMainWindow):
                 expfile.write(edits[0].text() + ',' + edits[1].text() + ',' + edits[2].text() + '\n')
 
     def save_pdf(self):
-        """Take a screenshot of the data GUI
+        """Take a screen shot of the data GUI
         Send to the QPrinter or QPainter and set value as pdf
         check favorites link for possible examples.
         """

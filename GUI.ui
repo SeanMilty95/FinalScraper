@@ -15,6 +15,26 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="3">
+     <widget class="QPushButton" name="pushButton">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="text">
+       <string>Update</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="3">
+     <widget class="QPushButton" name="show_data">
+      <property name="text">
+       <string>Show Data</string>
+      </property>
+     </widget>
+    </item>
     <item row="0" column="2" rowspan="6">
      <widget class="QScrollArea" name="scrollArea">
       <property name="frameShape">
@@ -45,23 +65,29 @@
       </property>
      </widget>
     </item>
-    <item row="0" column="3">
-     <widget class="QPushButton" name="pushButton">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
+    <item row="6" column="2">
+     <widget class="QPushButton" name="EditUnit">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
-       <string>Update</string>
+       <string>Edit Unit Info</string>
       </property>
      </widget>
     </item>
-    <item row="1" column="3">
-     <widget class="QPushButton" name="show_data">
+    <item row="1" column="5">
+     <widget class="QLabel" name="label_2">
       <property name="text">
-       <string>Show Data</string>
+       <string>Unit Name</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="4" colspan="2">
+     <widget class="QLineEdit" name="ErrorEdit">
+      <property name="clearButtonEnabled">
+       <bool>false</bool>
       </property>
      </widget>
     </item>
@@ -85,39 +111,6 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="5">
-     <widget class="QLabel" name="label_2">
-      <property name="text">
-       <string>Unit Name</string>
-      </property>
-     </widget>
-    </item>
-    <item row="0" column="4" colspan="2">
-     <widget class="QLineEdit" name="ErrorEdit">
-      <property name="clearButtonEnabled">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="2">
-     <widget class="QPushButton" name="EditUnit">
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Edit Unit Info</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="5">
-     <widget class="QLineEdit" name="lineEdit">
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-     </widget>
-    </item>
     <item row="3" column="5">
      <widget class="QLabel" name="label_3">
       <property name="text">
@@ -129,6 +122,13 @@
      <widget class="QPushButton" name="pushButton_3">
       <property name="text">
        <string>Update All</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="5">
+     <widget class="QLineEdit" name="lineEdit">
+      <property name="autoFillBackground">
+       <bool>false</bool>
       </property>
      </widget>
     </item>

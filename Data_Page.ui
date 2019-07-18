@@ -398,7 +398,7 @@ p, li { white-space: pre-wrap; }
      </font>
     </property>
     <property name="text">
-     <string>month name</string>
+     <string>Month</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -456,7 +456,7 @@ p, li { white-space: pre-wrap; }
      </font>
     </property>
     <property name="text">
-     <string>month name 2</string>
+     <string>Month</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_9">
