@@ -1,6 +1,8 @@
 import csv
 import os
 import datetime
+import urllib.request
+from urllib.error import URLError
 
 from PyQt5 import uic
 from PyQt5.QtWidgets import *
@@ -30,26 +32,33 @@ class EditWindow(QMainWindow):
         self.new_name = self.ui.NewName.text()
         self.new_url = self.ui.NewURL.text()
 
-        os.rename('./' + self.old_unit_name, './' + self.new_name)
+        try:
+            urllib.request.urlopen(self.new_url)
+        except ValueError:
+            self.ui.URLErrorLabel.setText("Invalid URL!")
+        except URLError:
+            self.ui.URLErrorLabel.setText("Invalid URL!")
+        else:
+            os.rename('./' + self.old_unit_name, './' + self.new_name)
 
-        new_info = []
-        date = str(datetime.date.today())
-        with open('units.txt', 'r', newline='') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                if row['name'] == self.old_unit_name:
-                    new_info.append({'name': self.new_name, 'url': self.new_url, 'date': date})
-                else:
-                    new_info.append(row)
+            new_info = []
+            date = str(datetime.date.today())
+            with open('units.txt', 'r', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    if row['name'] == self.old_unit_name:
+                        new_info.append({'name': self.new_name, 'url': self.new_url, 'date': date})
+                    else:
+                        new_info.append(row)
 
-        with open('units.txt', 'w', newline='') as csvfile:
-            fieldnames = ['name', 'url', 'date']
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-            writer.writeheader()
-            for i in range(len(new_info)):
-                writer.writerow(new_info[i])
+            with open('units.txt', 'w', newline='') as csvfile:
+                fieldnames = ['name', 'url', 'date']
+                writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                writer.writeheader()
+                for i in range(len(new_info)):
+                    writer.writerow(new_info[i])
 
-        self.ui.close()
+            self.ui.close()
 
     def find_old_url(self):
         with open('units.txt', 'r', newline='') as unit_file:

@@ -28,6 +28,7 @@ class DataWin(QMainWindow):
         self.rating = 0
         self.expenseCount = 0
         self.updated_date = ''
+        self.pdf_path = ''
         self.width = GetSystemMetrics(0) / 3.5
         self.height = GetSystemMetrics(1) / 20
         self.input_data()
@@ -254,8 +255,13 @@ class DataWin(QMainWindow):
         printer = QPrinter(QPrinter.HighResolution)
         printer.setOutputFormat(QPrinter.PdfFormat)
         printer.setResolution(100)
-
-        printer.setOutputFileName('./PDF/' + self.listing + self.month_to_see + '.pdf')
+        split_path = os.getcwd()
+        split_path = split_path.split(os.path.sep)
+        use_path = split_path[0] + '/' + split_path[1] + '/' + split_path[2]
+        self.pdf_path = use_path + '/Desktop/PDF'
+        if os.path.isdir(self.pdf_path) is False:
+            os.mkdir(self.pdf_path, 777)
+        printer.setOutputFileName(self.pdf_path + '/' + self.listing + self.month_to_see + '.pdf')
         self.render(printer)
 
         self.open_pdf()
@@ -288,9 +294,8 @@ class DataWin(QMainWindow):
         QDesktopServices.openUrl(QUrl(self.url_string))
 
     def open_pdf(self):
-        current_dir = os.getcwd()
         try:
-            os.startfile(current_dir + '/PDF/' + self.listing + self.month_to_see + '.pdf')
+            os.startfile(self.pdf_path + '/' + self.listing + self.month_to_see + '.pdf')
         except FileNotFoundError:
-            file_path = current_dir + '/PDF/' + self.listing + self.month_to_see + '.pdf'
+            file_path = self.pdf_path + '/' + self.listing + self.month_to_see + '.pdf'
             print('{0} : Could Not be Found!'.format(file_path))

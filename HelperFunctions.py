@@ -87,8 +87,11 @@ def next_calendar(driver):
         actions.move_to_element(rates_elem)
         actions.perform()
     time.sleep(0.3)
-    next_cal_elem = driver.find_element_by_class_name('cal-controls__button--next')
-    ActionChains(driver).click(next_cal_elem).perform()
+    try:
+        next_cal_elem = driver.find_element_by_class_name('cal-controls__button--next')
+        ActionChains(driver).click(next_cal_elem).perform()
+    except NoSuchElementException:
+        print("Could not find next button!")
 
 
 def get_soup(driver):
@@ -281,7 +284,10 @@ def calc_monthly_occupancy_rate(av_days, book_days, past):
     days_occupied = len(book_days)
     all_days = union(av_days, book_days, past)
     total_days = len(all_days)
-    occupancy_rate = Decimal((days_occupied / total_days) * 100)
+    try:
+        occupancy_rate = Decimal((days_occupied / total_days) * 100)
+    except ZeroDivisionError:
+        occupancy_rate = Decimal(-1.0)
     occupancy_rate = round(occupancy_rate, 1)
     occupancy_rate = (str(occupancy_rate))
     return occupancy_rate
