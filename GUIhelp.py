@@ -73,50 +73,58 @@ class Window(QMainWindow):
         unit_name = self.ui.lineEdit.text()
         unit_url = self.ui.lineEdit_2.text()
 
-        if unit_name == '' or unit_url == '':
-            self.ui.ErrorEdit.show()
-            self.ui.ErrorEdit.setText('Please fill out the unit information in the spaces provided.')
+        try:
+            urllib.request.urlopen(unit_url)
+        except ValueError:
+            self.ui.URLErrorLabel.setText("Invalid URL! Check for https://")
+        except URLError:
+            self.ui.URLErrorLabel.setText("Invalid URL! Cannot be reached!")
         else:
-            self.ui.ErrorEdit.clear()
-            self.ui.ErrorEdit.hide()
-            valid_info = True
-        if valid_info:
-            if unit_name is not None and unit_url is not None:  # If a field is empty do not add to file
-                self.ui.lineEdit.clear()
-                self.ui.lineEdit_2.clear()
-                date = str(datetime.date.today())
-                rows = []
-                new_dict = {'name': unit_name, 'url': unit_url, 'date': date}
-                try:
-                    with open('units.txt', 'r+', newline='') as csvfile:
-                        reader = csv.DictReader(csvfile)
-                        for row in reader:
-                            rows.append(row)
-                        rows.append(new_dict)
-                except IOError:
-                    print("Units file does not exist")
-                    
-                with open('units.txt', 'w+', newline='') as csvfile:
-                    fieldnames = ['name', 'url', 'date']
-                    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-                    writer.writeheader()
-                    for i in range(len(rows)):
-                        writer.writerow(rows[i])
-
-                # Maybe just add an append open and add to the end of file.
-
-            # Opens and reads from the list in units.txt
-            in_file = open('units.txt', 'r')
-            unit_list = in_file.readlines()
-            self.all_lines = unit_list
-            in_file.close()
-
-            layout = self.ui.scrollAreaWidgetContents.layout()
-            if layout is None or layout == '':
-                self.fill_unit_list()
+            self.ui.URLErrorLabel.setText("")
+            if unit_name == '' or unit_url == '':
+                self.ui.ErrorEdit.show()
+                self.ui.ErrorEdit.setText('Please fill out the unit information in the spaces provided.')
             else:
-                layout.addWidget(QCheckBox(unit_name))
-                layout.update()
+                self.ui.ErrorEdit.clear()
+                self.ui.ErrorEdit.hide()
+                valid_info = True
+            if valid_info:
+                if unit_name is not None and unit_url is not None:  # If a field is empty do not add to file
+                    self.ui.lineEdit.clear()
+                    self.ui.lineEdit_2.clear()
+                    date = str(datetime.date.today())
+                    rows = []
+                    new_dict = {'name': unit_name, 'url': unit_url, 'date': date}
+                    try:
+                        with open('units.txt', 'r+', newline='') as csvfile:
+                            reader = csv.DictReader(csvfile)
+                            for row in reader:
+                                rows.append(row)
+                            rows.append(new_dict)
+                    except IOError:
+                        print("Units file does not exist")
+                    
+                    with open('units.txt', 'w+', newline='') as csvfile:
+                        fieldnames = ['name', 'url', 'date']
+                        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+                        writer.writeheader()
+                        for i in range(len(rows)):
+                            writer.writerow(rows[i])
+
+                    # Maybe just add an append open and add to the end of file.
+
+                # Opens and reads from the list in units.txt
+                in_file = open('units.txt', 'r')
+                unit_list = in_file.readlines()
+                self.all_lines = unit_list
+                in_file.close()
+
+                layout = self.ui.scrollAreaWidgetContents.layout()
+                if layout is None or layout == '':
+                    self.fill_unit_list()
+                else:
+                    layout.addWidget(QCheckBox(unit_name))
+                    layout.update()
 
     def delete_unit(self):
         """Deletes a unit from the units.txt file and
