@@ -178,11 +178,7 @@ class Window(QMainWindow):
                 # that they be cray
         self.get_info_for(units)
         # Generate the data GUI to present the data gathered from the listings html
-        current_month = datetime.datetime.now()
         for unit in units:
-            #data_win = DataWin(unit['name'], current_month.strftime("%B"))
-            #data_win.show()
-            #data_win.activateWindow()
             data_win = MonthWin(unit['name'])
             data_win.show()
             data_win.activateWindow()
@@ -210,7 +206,7 @@ class Window(QMainWindow):
         # Creates a driver for chrome
         opts = Options()
         opts.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                          "AppleWebKit/537.36 (KHTML, like Gecko) "
+                          "AppleWebKit/537.36 (HTML, like Gecko) "
                           "Chrome/75.0.3770.100 Safari/537.36")
         driver = webdriver.Chrome(chrome_options=opts)
         for unit in units:
