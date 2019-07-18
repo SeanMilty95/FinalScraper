@@ -172,7 +172,10 @@ class Window(QMainWindow):
         # Generate the data GUI to present the data gathered from the listings html
         current_month = datetime.datetime.now()
         for unit in units:
-            data_win = DataWin(unit['name'], current_month.strftime("%B"))
+            #data_win = DataWin(unit['name'], current_month.strftime("%B"))
+            #data_win.show()
+            #data_win.activateWindow()
+            data_win = MonthWin(unit['name'])
             data_win.show()
             data_win.activateWindow()
 
