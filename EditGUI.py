@@ -9,25 +9,26 @@ from PyQt5.QtWidgets import *
 
 
 class EditWindow(QMainWindow):
-    def __init__(self, name):
+    def __init__(self, box):
         super(EditWindow, self).__init__()
         # Load .ui file created in the designer program
         self.ui = uic.loadUi('EditGUI.ui', self)
         self.ui.setWindowTitle(" Edit Unit Info")
-        self.old_unit_name = name
+        self.boxey = box
+        self.old_unit_name = box.text()
         self.old_url = self.find_old_url()
         self.new_name = ''
         self.new_url = ''
         self.name_changed = False
         self.input_data()
-        self.button_listener()
+        # self.button_listener()
 
     def input_data(self):
         self.ui.OldName.setText(self.old_unit_name)
         self.ui.OldURL.setText(self.old_url)
 
-    def button_listener(self):
-        self.ui.Accept.clicked.connect(self.update_data)
+    # def button_listener(self):
+        # self.ui.Accept.clicked.connect(self.update_data)
 
     def update_data(self):
         self.new_name = self.ui.NewName.text()
@@ -58,7 +59,7 @@ class EditWindow(QMainWindow):
                 writer.writeheader()
                 for i in range(len(new_info)):
                     writer.writerow(new_info[i])
-
+            print("updated")
             self.ui.close()
 
     def find_old_url(self):

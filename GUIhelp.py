@@ -240,13 +240,17 @@ class Window(QMainWindow):
         check_boxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
         for box in check_boxes:
             if box.isChecked():
-                edit_win = EditWindow(box.text())
-                edit_win.show()
-                edit_win.activateWindow()
-                count = 0
-                while edit_win.name_changed is False:
-                    count += 1
-                box.setText(edit_win.new_name)
+                self.edit_win = EditWindow(box)
+                self.edit_win.show()
+                self.edit_win.activateWindow()
+                self.edit_win.ui.Accept.clicked.connect(self.edit_name)
+
+    def edit_name(self):
+        self.edit_win.update_data()
+        self.update_scroll_box()
+
+    def update_scroll_box(self):
+        print("Under Maintenance please restart program")
 
     def update_date(self, units):
         current_date = str(datetime.date.today())
