@@ -208,8 +208,21 @@ class Window(QMainWindow):
         opts.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                           "AppleWebKit/537.36 (HTML, like Gecko) "
                           "Chrome/75.0.3770.100 Safari/537.36")
+        current_date = str(datetime.date.today())
         driver = webdriver.Chrome(chrome_options=opts)
         for unit in units:
+            with open('units.txt', 'r+', newline='') as inf:
+                reader = csv.DictReader(inf.readlines())
+            with open('units.txt', 'w', newline='') as outf:
+                writer = csv.DictWriter(outf, fieldnames=['name', 'url', 'date'])
+                writer.writeheader()
+                for row in reader:
+                    if row['name'] == unit['name']:
+                        row['date'] = current_date
+                        writer.writerow(row)
+                    else:
+                        writer.writerow(row)
+                writer.writerows(reader)
             try:
                 driver.get(unit['url'])  # Goes to the url listed for the unit
             except TypeError:
