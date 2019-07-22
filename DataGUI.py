@@ -279,8 +279,8 @@ class DataWin(QMainWindow):
             return False
 
     def save_notes(self):
-        with open('./' + self.listing + '/' + 'Notes.txt', 'w+', newline='') as sumfile:
-            sumfile.write(self.ui.SumNotes.toPlainText())
+        with open('./' + self.listing + '/' + 'Notes.txt', 'w+', newline='') as sum_file:
+            sum_file.write(self.ui.SumNotes.toPlainText())
 
     def update_count(self):
         """Gets the counter of expense horzwidgets and updates the

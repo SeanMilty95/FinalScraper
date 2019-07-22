@@ -208,21 +208,10 @@ class Window(QMainWindow):
         opts.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
                           "AppleWebKit/537.36 (HTML, like Gecko) "
                           "Chrome/75.0.3770.100 Safari/537.36")
-        current_date = str(datetime.date.today())
+        self.update_date(units)
         driver = webdriver.Chrome(chrome_options=opts)
+        count = 0
         for unit in units:
-            with open('units.txt', 'r+', newline='') as inf:
-                reader = csv.DictReader(inf.readlines())
-            with open('units.txt', 'w', newline='') as outf:
-                writer = csv.DictWriter(outf, fieldnames=['name', 'url', 'date'])
-                writer.writeheader()
-                for row in reader:
-                    if row['name'] == unit['name']:
-                        row['date'] = current_date
-                        writer.writerow(row)
-                    else:
-                        writer.writerow(row)
-                writer.writerows(reader)
             try:
                 driver.get(unit['url'])  # Goes to the url listed for the unit
             except TypeError:
@@ -230,11 +219,14 @@ class Window(QMainWindow):
             except WebDriverException:
                 print("Invalid url! WebDriver")
             # Right clicks and left clicks to inspect web page elements
-            time.sleep(1)
-            actions = ActionChains(driver)
-            actions.context_click().perform()
-            pyautogui.click(150, 356)
-            time.sleep(1)
+            if count == 0:
+                time.sleep(1)
+                actions = ActionChains(driver)
+                actions.context_click().perform()
+                time.sleep(0.5)
+                pyautogui.click(150, 356)
+                time.sleep(1)
+            count += 1
 
             # Generally the functions find the data you are looking for
             # Check the file HelperFunctions to specifically see what they do
@@ -251,4 +243,30 @@ class Window(QMainWindow):
                 edit_win = EditWindow(box.text())
                 edit_win.show()
                 edit_win.activateWindow()
+                count = 0
+                while edit_win.name_changed is False:
+                    count += 1
                 box.setText(edit_win.new_name)
+
+    def update_date(self, units):
+        current_date = str(datetime.date.today())
+        remove = True
+        for unit in units:
+            with open('units.txt', 'r+', newline='') as inf, open('units_temp.txt', 'w', newline='') as outf:
+                reader = csv.DictReader(inf.readlines())
+                writer = csv.DictWriter(outf, fieldnames=['name', 'url', 'date'])
+                writer.writeheader()
+                for row in reader:
+                    try:
+                        if row['name'] == unit['name']:
+                            row['date'] = current_date
+                            writer.writerow(row)
+                        else:
+                            writer.writerow(row)
+                    except TypeError:
+                        print("Date could not update correctly")
+                        remove = False
+                writer.writerows(reader)
+            if remove is True:
+                os.remove('units.txt')
+                os.rename('units_temp.txt', 'units.txt')

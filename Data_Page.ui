@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>840</width>
+    <width>887</width>
     <height>1009</height>
    </rect>
   </property>
@@ -30,7 +30,7 @@
     <property name="horizontalSpacing">
      <number>6</number>
     </property>
-    <item row="4" column="0" colspan="18">
+    <item row="5" column="0" colspan="18">
      <widget class="QFrame" name="Expenses">
       <property name="minimumSize">
        <size>
@@ -52,7 +52,7 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="1" colspan="3">
+    <item row="6" column="1" colspan="3">
      <widget class="QLabel" name="Counter">
       <property name="font">
        <font>
@@ -66,14 +66,14 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="16" colspan="2">
+    <item row="6" column="16" colspan="2">
      <widget class="QPushButton" name="save_exp">
       <property name="text">
        <string>Save Expenses</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="0" colspan="2">
+    <item row="7" column="0" colspan="2">
      <widget class="QLabel" name="label_4">
       <property name="font">
        <font>
@@ -85,7 +85,7 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="9" colspan="3">
+    <item row="3" column="9" colspan="3">
      <widget class="QLineEdit" name="AnnualRevenue">
       <property name="inputMask">
        <string/>
@@ -98,29 +98,14 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="0" colspan="2">
-     <widget class="QLabel" name="month_name">
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Month</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="6" column="5" colspan="2">
+    <item row="7" column="5" colspan="2">
      <widget class="QLineEdit" name="Net">
       <property name="placeholderText">
        <string>Press Calculate</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="5" colspan="2">
+    <item row="6" column="5" colspan="2">
      <widget class="QPushButton" name="pushButton_2">
       <property name="font">
        <font>
@@ -132,7 +117,7 @@
       </property>
      </widget>
     </item>
-    <item row="6" column="2" colspan="3">
+    <item row="7" column="2" colspan="3">
      <widget class="QLabel" name="NetMonth">
       <property name="font">
        <font>
@@ -144,14 +129,14 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="4" colspan="2">
+    <item row="3" column="4" colspan="2">
      <widget class="QLineEdit" name="Gross">
       <property name="placeholderText">
        <string>Unavailable</string>
       </property>
      </widget>
     </item>
-    <item row="2" column="15" colspan="2">
+    <item row="3" column="15" colspan="2">
      <widget class="QLabel" name="UpdatedDate">
       <property name="font">
        <font>
@@ -170,7 +155,7 @@
       </property>
      </widget>
     </item>
-    <item row="6" column="7" colspan="3">
+    <item row="7" column="7" colspan="3">
      <widget class="QLabel" name="label_9">
       <property name="font">
        <font>
@@ -197,7 +182,7 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="0" colspan="3">
+    <item row="4" column="0" colspan="3">
      <widget class="QLabel" name="label_3">
       <property name="font">
        <font>
@@ -212,7 +197,7 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="6" colspan="3">
+    <item row="3" column="6" colspan="3">
      <widget class="QLabel" name="label">
       <property name="font">
        <font>
@@ -224,13 +209,13 @@
       </property>
      </widget>
     </item>
-    <item row="3" column="3" colspan="5">
+    <item row="4" column="3" colspan="5">
      <widget class="QLineEdit" name="ExpenseError"/>
     </item>
-    <item row="3" column="8" colspan="10">
+    <item row="4" column="8" colspan="10">
      <widget class="QLineEdit" name="ErrorEdit"/>
     </item>
-    <item row="2" column="0" colspan="4">
+    <item row="3" column="0" colspan="4">
      <widget class="QLabel" name="label_2">
       <property name="font">
        <font>
@@ -242,7 +227,7 @@
       </property>
      </widget>
     </item>
-    <item row="2" column="14">
+    <item row="3" column="14">
      <widget class="QLabel" name="label_11">
       <property name="font">
        <font>
@@ -254,21 +239,21 @@
       </property>
      </widget>
     </item>
-    <item row="5" column="0">
+    <item row="6" column="0">
      <widget class="QPushButton" name="pushButton">
       <property name="text">
        <string>+</string>
       </property>
      </widget>
     </item>
-    <item row="10" column="5" colspan="2">
+    <item row="11" column="5" colspan="2">
      <widget class="QLineEdit" name="Rating">
       <property name="placeholderText">
        <string>Unavailable</string>
       </property>
      </widget>
     </item>
-    <item row="8" column="8" colspan="3">
+    <item row="9" column="8" colspan="3">
      <widget class="QLabel" name="label_10">
       <property name="font">
        <font>
@@ -280,7 +265,7 @@
       </property>
      </widget>
     </item>
-    <item row="12" column="0" colspan="18">
+    <item row="13" column="0" colspan="18">
      <widget class="QTextEdit" name="SumNotes">
       <property name="maximumSize">
        <size>
@@ -306,7 +291,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="9" column="0" colspan="5">
+    <item row="10" column="0" colspan="5">
      <widget class="QLabel" name="label_7">
       <property name="font">
        <font>
@@ -318,21 +303,21 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="9" column="5" colspan="2">
+    <item row="10" column="5" colspan="2">
      <widget class="QLineEdit" name="Occupancy">
       <property name="placeholderText">
        <string>Unavailable</string>
       </property>
      </widget>
     </item>
-    <item row="6" column="10" colspan="2">
+    <item row="7" column="10" colspan="2">
      <widget class="QLineEdit" name="AnnualNet">
       <property name="placeholderText">
        <string>Press Calculate</string>
       </property>
      </widget>
     </item>
-    <item row="10" column="0" colspan="5">
+    <item row="11" column="0" colspan="5">
      <widget class="QLabel" name="label_8">
       <property name="font">
        <font>
@@ -344,14 +329,14 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="8" column="5" colspan="2">
+    <item row="9" column="5" colspan="2">
      <widget class="QLineEdit" name="Given">
       <property name="placeholderText">
        <string>Unavailable</string>
       </property>
      </widget>
     </item>
-    <item row="7" column="0" colspan="2">
+    <item row="8" column="0" colspan="2">
      <widget class="QLabel" name="label_5">
       <property name="font">
        <font>
@@ -366,7 +351,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="8" column="0" colspan="2">
+    <item row="9" column="0" colspan="2">
      <widget class="QLabel" name="label_6">
       <property name="font">
        <font>
@@ -378,14 +363,14 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="11" column="17">
+    <item row="12" column="17">
      <widget class="QPushButton" name="SaveNotes">
       <property name="text">
        <string>Save Notes</string>
       </property>
      </widget>
     </item>
-    <item row="8" column="11" colspan="7">
+    <item row="9" column="11" colspan="7">
      <widget class="QLabel" name="HyperLink">
       <property name="font">
        <font>
@@ -403,7 +388,7 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
     </item>
-    <item row="2" column="13">
+    <item row="3" column="13">
      <spacer name="horizontalSpacer">
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
@@ -416,6 +401,27 @@ p, li { white-space: pre-wrap; }
       </property>
      </spacer>
     </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="month_name">
+      <property name="maximumSize">
+       <size>
+        <width>100</width>
+        <height>12</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Month</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
    </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
@@ -423,7 +429,7 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>840</width>
+     <width>887</width>
      <height>21</height>
     </rect>
    </property>

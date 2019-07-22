@@ -18,6 +18,7 @@ class EditWindow(QMainWindow):
         self.old_url = self.find_old_url()
         self.new_name = ''
         self.new_url = ''
+        self.name_changed = False
         self.input_data()
         self.button_listener()
 
