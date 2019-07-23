@@ -14,9 +14,9 @@ class EditWindow(QMainWindow):
         # Load .ui file created in the designer program
         self.ui = uic.loadUi('EditGUI.ui', self)
         self.ui.setWindowTitle(" Edit Unit Info")
-        self.boxey = box
         self.old_unit_name = box.text()
         self.old_url = self.find_old_url()
+        self.boxey = box
         self.new_name = ''
         self.new_url = ''
         self.name_changed = False
@@ -59,8 +59,6 @@ class EditWindow(QMainWindow):
                 writer.writeheader()
                 for i in range(len(new_info)):
                     writer.writerow(new_info[i])
-            print("updated")
-            self.ui.close()
 
     def find_old_url(self):
         with open('units.txt', 'r', newline='') as unit_file:
@@ -69,3 +67,6 @@ class EditWindow(QMainWindow):
                 if row['name'] == self.old_unit_name:
                     return row['url']
         return 'hello'
+
+    def get_name(self):
+        return self.new_name

@@ -250,7 +250,17 @@ class Window(QMainWindow):
         self.update_scroll_box()
 
     def update_scroll_box(self):
-        print("Under Maintenance please restart program")
+        name = self.edit_win.get_name()
+        old_name = self.edit_win.old_unit_name
+        check_boxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
+        for box in check_boxes:
+            if box == self.edit_win.boxey:
+                box.setText(name)
+        self.edit_win.close()
+        try:
+            os.renames(old_name, name)
+        except FileNotFoundError:
+            print("May Not Have Changed Directory Name!")
 
     def update_date(self, units):
         current_date = str(datetime.date.today())
