@@ -260,7 +260,7 @@ class Window(QMainWindow):
         try:
             os.renames(old_name, name)
         except FileNotFoundError:
-            print("May Not Have Changed Directory Name!")
+            print("May Not Have Changed Directory Name!\nPlease restart the program!")
 
     def update_date(self, units):
         current_date = str(datetime.date.today())
