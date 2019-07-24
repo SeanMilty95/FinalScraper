@@ -114,10 +114,23 @@ class Window(QMainWindow):
                     # Maybe just add an append open and add to the end of file.
 
                 # Opens and reads from the list in units.txt
+                """
                 in_file = open('units.txt', 'r')
                 unit_list = in_file.readlines()
                 self.all_lines = unit_list
+                print(self.all_lines)
                 in_file.close()
+                """
+
+                unit_list = []
+                try:
+                    with open('units.txt', 'r+', newline='') as csvfile:
+                        reader = csv.DictReader(csvfile)
+                        for row in reader:
+                            unit_list.append(row)
+                        self.all_lines = unit_list
+                except IOError:
+                    print("No units.txt file")
 
                 layout = self.ui.scrollAreaWidgetContents.layout()
                 if layout is None or layout == '':
@@ -150,6 +163,16 @@ class Window(QMainWindow):
                     check_boxes[i].setChecked(False)
                     check_boxes[i].hide()
                     layout.update()
+
+        unit_list = []
+        try:
+            with open('units.txt', 'r+', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    unit_list.append(row)
+                self.all_lines = unit_list
+        except IOError:
+            print("No units.txt file")
 
     def update_all(self):
         """Gathers and updates all the unit info for the units
@@ -261,6 +284,17 @@ class Window(QMainWindow):
             os.renames(old_name, name)
         except FileNotFoundError:
             print("May Not Have Changed Directory Name!\nPlease restart the program!")
+
+        unit_list = []
+        try:
+            with open('units.txt', 'r+', newline='') as csvfile:
+                reader = csv.DictReader(csvfile)
+                for row in reader:
+                    unit_list.append(row)
+                self.all_lines = unit_list
+                print(self.all_lines)
+        except IOError:
+            print("No units.txt file")
 
     def update_date(self, units):
         current_date = str(datetime.date.today())
