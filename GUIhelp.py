@@ -1,6 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import WebDriverException
+from openpyxl import Workbook
 
 from MonthGUI import *
 from EditGUI import *
@@ -32,6 +33,7 @@ class Window(QMainWindow):
         self.ui.pushButton.clicked.connect(self.generate)
         self.ui.show_data.clicked.connect(self.show_data_page)
         self.ui.EditUnit.clicked.connect(self.edit_unit_info)
+        self.ui.ExcelDocument.clicked.connect(self.generate_excel)
 
     def hide_error_boxes(self):
         """Hides the Text Edit used to display error messages."""
@@ -284,7 +286,6 @@ class Window(QMainWindow):
                 for row in reader:
                     unit_list.append(row)
                 self.all_lines = unit_list
-                print(self.all_lines)
         except IOError:
             print("No units.txt file")
 
@@ -310,3 +311,11 @@ class Window(QMainWindow):
             if remove is True:
                 os.remove('units.txt')
                 os.rename('units_temp.txt', 'units.txt')
+
+    def generate_excel(self):
+        print("Excel button pressed")
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Test Worksheet"
+        wb.save("test.xlsx")
+        os.startfile("test.xlsx")
