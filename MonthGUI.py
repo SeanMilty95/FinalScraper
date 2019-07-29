@@ -8,6 +8,7 @@ class MonthWin(QMainWindow):
         self.ui = uic.loadUi('Month.ui', self)
         self.title = "Available Month List"
         self.unit_name = name
+        self.is_annual = False
         self.available_months = []
         self.input_data()
         self.button_listener()
@@ -23,8 +24,9 @@ class MonthWin(QMainWindow):
         self.ui.groupBox.setLayout(layout)
 
     def button_listener(self):
-        self.ui.buttonBox.accepted.connect(self.show_month_data)
+        self.ui.buttonBox.accepted.connect(self.which_data)
         self.ui.buttonBox.rejected.connect(self.ui.close)
+        self.ui.AnnualData.clicked.connect(self.set_annual)
 
     def get_month_names(self):
         year = str(datetime.datetime.now().year)
@@ -32,6 +34,12 @@ class MonthWin(QMainWindow):
             reader = csv.DictReader(unit_file)
             for row in reader:
                 self.available_months.append(row['month'])
+
+    def which_data(self):
+        if self.is_annual:
+            self.show_annual_data()
+        else:
+            self.show_month_data()
 
     def show_month_data(self):
         month_list = []
@@ -46,3 +54,27 @@ class MonthWin(QMainWindow):
             data_win.show()
             data_win.activateWindow()
         self.ui.close()
+
+    def show_annual_data(self):
+        self.ui.ErrorLabel.setText("Annual Data not yet available")
+        self.ui.ErrorLabel.show()
+
+    def set_annual(self):
+        if self.is_annual:
+            self.is_annual = False
+            self.set_checkable()
+        else:
+            self.is_annual = True
+            self.set_uncheckable()
+
+    def set_uncheckable(self):
+        months = self.ui.groupBox.findChildren(QCheckBox)
+        for month in months:
+            month.setChecked(False)
+            month.setCheckable(False)
+
+    def set_checkable(self):
+        self.ui.ErrorLabel.hide()
+        months = self.ui.groupBox.findChildren(QCheckBox)
+        for month in months:
+            month.setCheckable(True)
