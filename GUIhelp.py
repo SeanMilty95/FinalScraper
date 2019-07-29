@@ -114,14 +114,6 @@ class Window(QMainWindow):
                     # Maybe just add an append open and add to the end of file.
 
                 # Opens and reads from the list in units.txt
-                """
-                in_file = open('units.txt', 'r')
-                unit_list = in_file.readlines()
-                self.all_lines = unit_list
-                print(self.all_lines)
-                in_file.close()
-                """
-
                 unit_list = []
                 try:
                     with open('units.txt', 'r+', newline='') as csvfile:
