@@ -87,14 +87,15 @@ def next_calendar(driver):
         actions.move_to_element(rates_elem)
         actions.perform()
     time.sleep(0.3)
-    next_cal_elem = driver.find_element_by_class_name('cal-controls__button--next')
-    ActionChains(driver).click(next_cal_elem).perform()
+    try:
+        next_cal_elem = driver.find_element_by_class_name('cal-controls__button--next')
+        ActionChains(driver).click(next_cal_elem).perform()
+    except NoSuchElementException:
+        print("Could not find next button!")
 
 
 def get_soup(driver):
     """Grabs all the html from the vrbo listing web page."""
-    # elem = driver.find_element_by_xpath("//*")
-    # source_code = elem.get_attribute("innerHTML")#used to be outer
     source_code = driver.execute_script("return document.body.innerHTML")
     soup = BeautifulSoup(source_code, 'html.parser')
     return soup
@@ -249,7 +250,11 @@ def get_month_info(driver):
             reload_page()
             soup = get_soup(driver)
             month_table = soup.find(class_='month-table')
-        days = month_table.find_all(class_='day')
+        try:
+            days = month_table.find_all(class_='day')
+        except AttributeError:
+            print("Could not grab correct html.")
+            break
         available_days = get_available_days(days)
         cal_prices = have_calendar_prices(available_days)
         month_name, year = find_month(soup)
@@ -281,7 +286,10 @@ def calc_monthly_occupancy_rate(av_days, book_days, past):
     days_occupied = len(book_days)
     all_days = union(av_days, book_days, past)
     total_days = len(all_days)
-    occupancy_rate = Decimal((days_occupied / total_days) * 100)
+    try:
+        occupancy_rate = Decimal((days_occupied / total_days) * 100)
+    except ZeroDivisionError:
+        occupancy_rate = Decimal(-1.0)
     occupancy_rate = round(occupancy_rate, 1)
     occupancy_rate = (str(occupancy_rate))
     return occupancy_rate
@@ -329,7 +337,11 @@ def reload_page():
 def find_rating(soup):
     """Finds and returns the average rating of a unit."""
     rating_div = soup.find(class_="review-summary__header-ratings-average")
-    contents = rating_div.contents
+    try:
+        contents = rating_div.contents
+    except AttributeError:
+        print("Could not find rating")
+        return 0
     contents2 = contents[0].split('/')
     rating = contents2[0]
     return rating

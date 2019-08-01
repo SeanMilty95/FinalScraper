@@ -1,6 +1,7 @@
 import csv
 import datetime
 import ast
+import os
 
 from PyQt5 import uic
 from PyQt5.QtPrintSupport import *
@@ -27,6 +28,8 @@ class DataWin(QMainWindow):
         self.occupancy_rate = 0
         self.rating = 0
         self.expenseCount = 0
+        self.updated_date = ''
+        self.pdf_path = ''
         self.width = GetSystemMetrics(0) / 3.5
         self.height = GetSystemMetrics(1) / 20
         self.input_data()
@@ -87,6 +90,8 @@ class DataWin(QMainWindow):
                     self.ui.HyperLink.setText('<a href=' + row['url'] + '>' + self.listing + '</a>')
                     self.ui.HyperLink.setOpenExternalLinks(True)
                     self.url_string = row['url']
+                    self.updated_date = row['date']
+        self.ui.UpdatedDate.setText(self.updated_date)
 
         try:
             with open('./' + self.listing + '/' + 'Notes.txt', 'r', newline='') as sumfile:
@@ -241,19 +246,26 @@ class DataWin(QMainWindow):
                 expfile.write(edits[0].text() + ',' + edits[1].text() + ',' + edits[2].text() + '\n')
 
     def save_pdf(self):
-        """Take a screenshot of the data GUI
+        """Take a screen shot of the data GUI
         Send to the QPrinter or QPainter and set value as pdf
-        check favorited links for possible examples.
+        check favorites link for possible examples.
         """
-        self.ui.ExpenseError.hide()
-        self.ui.ErrorEdit.hide()
-        
+        self.ui.ExpenseError.clear()
+        self.ui.ExpenseError.setText("PDF saved!")
+
         printer = QPrinter(QPrinter.HighResolution)
         printer.setOutputFormat(QPrinter.PdfFormat)
         printer.setResolution(100)
-
-        printer.setOutputFileName('./' + self.listing + '/' + '.pdf')
+        split_path = os.getcwd()
+        split_path = split_path.split(os.path.sep)
+        use_path = split_path[0] + '/' + split_path[1] + '/' + split_path[2]
+        self.pdf_path = use_path + '/Desktop/PDF'
+        if os.path.isdir(self.pdf_path) is False:
+            os.mkdir(self.pdf_path, 777)
+        printer.setOutputFileName(self.pdf_path + '/' + self.listing + self.month_to_see + '.pdf')
         self.render(printer)
+
+        self.open_pdf()
 
     def to_many(self):
         """Checks the amount of children called 'HorzWidget' from
@@ -268,8 +280,8 @@ class DataWin(QMainWindow):
             return False
 
     def save_notes(self):
-        with open('./' + self.listing + '/' + 'Notes.txt', 'w+', newline='') as sumfile:
-            sumfile.write(self.ui.SumNotes.toPlainText())
+        with open('./' + self.listing + '/' + 'Notes.txt', 'w+', newline='') as sum_file:
+            sum_file.write(self.ui.SumNotes.toPlainText())
 
     def update_count(self):
         """Gets the counter of expense horzwidgets and updates the
@@ -281,3 +293,10 @@ class DataWin(QMainWindow):
 
     def link(self):
         QDesktopServices.openUrl(QUrl(self.url_string))
+
+    def open_pdf(self):
+        try:
+            os.startfile(self.pdf_path + '/' + self.listing + self.month_to_see + '.pdf')
+        except FileNotFoundError:
+            file_path = self.pdf_path + '/' + self.listing + self.month_to_see + '.pdf'
+            print('{0} : Could Not be Found!'.format(file_path))
