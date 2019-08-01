@@ -7,6 +7,7 @@ class MonthWin(QMainWindow):
         # Load the GUI created in the designer program
         self.ui = uic.loadUi('Month.ui', self)
         self.title = "Available Month List"
+        self.setWindowIcon(QIcon('teemo-classic.png'))
         self.unit_name = name
         self.is_annual = False
         self.available_months = []

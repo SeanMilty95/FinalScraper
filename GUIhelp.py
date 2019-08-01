@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import WebDriverException
 from openpyxl import Workbook
+from PyQt5 import QtGui
 
 from MonthGUI import *
 from EditGUI import *
@@ -18,9 +19,11 @@ class Window(QMainWindow):
         self.width = GetSystemMetrics(0) / 3.5
         self.height = GetSystemMetrics(1) / 3
         self.ui.move(self.width, self.height)
+        self.setWindowIcon(QtGui.QIcon('teemo-classic.png'))
         # List that will hold the lines from unit.txt
         self.all_lines = []
         self.fill_unit_list()
+        self.xl_folder_path = ''
         self.hide_error_boxes()
         self.button_listener()
 
@@ -50,6 +53,7 @@ class Window(QMainWindow):
                 reader = csv.DictReader(csvfile)
                 for row in reader:
                     unit_list.append(row)
+                unit_list = sorted(unit_list, key=lambda k: k['name'])
                 self.all_lines = unit_list
         except IOError:
             print("No units.txt file")
@@ -105,7 +109,7 @@ class Window(QMainWindow):
                             rows.append(new_dict)
                     except IOError:
                         print("Units file does not exist")
-                    
+
                     with open('units.txt', 'w+', newline='') as csvfile:
                         fieldnames = ['name', 'url', 'date']
                         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
@@ -289,7 +293,8 @@ class Window(QMainWindow):
         except IOError:
             print("No units.txt file")
 
-    def update_date(self, units):
+    @staticmethod
+    def update_date(units):
         current_date = str(datetime.date.today())
         remove = True
         for unit in units:
@@ -314,16 +319,58 @@ class Window(QMainWindow):
 
     def generate_excel(self):
         # Loop through check boxes to find out what units to view
+        names = []
+        check_boxes = self.ui.scrollAreaWidgetContents.findChildren(QCheckBox)
+        for box in check_boxes:
+            if box.isChecked():
+                names.append(box.text())
         # Check for already created file and open if found
-        # Create if not found
+        for name in names:
+            if self.has_xl_folder() is False:
+                self.make_xl_folder()
+        # Create if not found --Done
         # Populate with new data
-        # Save and open updated document
+            if self.has_xlsx_file(name):
+                os.startfile(self.xl_folder_path + '/' + name + '.xlsx')
+            else:
+                self.make_xlsx_file(name)
+
+            os.startfile(self.xl_folder_path + '/' + name + '.xlsx')
+
+    def has_xlsx_file(self, name):
+        return os.path.isfile(self.xl_folder_path + '/' + name + '.xlsx')
+
+    def make_xlsx_file(self, name):
         wb = Workbook()
-        ws = wb.active
-        ws.title = "Test Worksheet"
+        ws0 = wb.active
+        ws0.title = 'Annual Data'
+        self.generate_month_sheets(name, wb)
         try:
-            wb.save("test.xlsx")
+            wb.save(self.xl_folder_path + '/' + name + '.xlsx')
         except PermissionError:
             print("File may already be in use.\nFile not saved!")
 
-        os.startfile("test.xlsx")
+    def has_xl_folder(self):
+        path_name = os.path.split(os.getcwd())
+        path_name = os.path.split(path_name[0])
+        path_name = os.path.split(path_name[0])
+        self.xl_folder_path = path_name[0] + "/Desktop/RentalExcel"
+        return os.path.isdir(self.xl_folder_path)
+
+    def make_xl_folder(self):
+        try:
+            os.mkdir(self.xl_folder_path)
+        except IOError:
+            print("Could not create excel folder.\nQuiting program...")
+            time.sleep(2)
+            quit()
+
+    @staticmethod
+    def generate_month_sheets(name, wb):
+        year = str(datetime.datetime.now().year)
+        with open('./' + name + '/' + year + '.txt', 'r', newline='') as unit_file:
+            reader = csv.DictReader(unit_file)
+            for row in reader:
+                title = row['month']
+                if title != 'n/a':
+                    wb.create_sheet(title=title)

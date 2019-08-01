@@ -6,6 +6,7 @@ from urllib.error import URLError
 
 from PyQt5 import uic
 from PyQt5.QtWidgets import *
+from PyQt5.QtGui import QIcon
 
 
 class EditWindow(QMainWindow):
@@ -14,6 +15,7 @@ class EditWindow(QMainWindow):
         # Load .ui file created in the designer program
         self.ui = uic.loadUi('EditGUI.ui', self)
         self.ui.setWindowTitle(" Edit Unit Info")
+        self.setWindowIcon(QIcon('teemo-classic.png'))
         self.old_unit_name = box.text()
         self.old_url = self.find_old_url()
         self.boxey = box
