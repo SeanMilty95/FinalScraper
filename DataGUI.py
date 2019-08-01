@@ -6,7 +6,7 @@ import os
 from PyQt5 import uic
 from PyQt5.QtPrintSupport import *
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QDesktopServices
+from PyQt5.QtGui import QDesktopServices, QIcon
 from PyQt5.QtCore import QUrl
 from win32api import GetSystemMetrics
 
@@ -17,6 +17,7 @@ class DataWin(QMainWindow):
         # Load the GUI created in the designer program
         self.ui = uic.loadUi('Data_Page.ui', self)
         self.title = "Listing Data"
+        self.setWindowIcon(QIcon('teemo-classic.png'))
         self.month_to_see = month
         self.listing = unit_name
         self.url_string = ''

@@ -177,6 +177,7 @@ def gen_data_file(month_list, selected_unit):
             rating = month_list[i][9]
             occupancy.append(month_list[i][10])
         except IndexError:
+            print("Index Error")
             new_avail_days.append('n/a')
             new_booked_days.append('n/a')
             new_revenue.append('0')
@@ -212,6 +213,7 @@ def gen_data_file(month_list, selected_unit):
     if append is False:
         for i in range(len(rows)):
             for k in range(12):
+                print(new_dict[k])
                 if rows[i]['year'] == year[k] and rows[i]['month'] == month_name[k]:
                     rows[i] = new_dict[k]
                 elif i == len(rows):

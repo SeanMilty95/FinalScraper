@@ -1,6 +1,8 @@
 name,url,date
-Hali'i Kai Building 8,https://www.vrbo.com/314430,2019-07-23
-Hali'i Kai unit 7C,https://www.vrbo.com/417938,2019-07-23
-Hali'i Kai unit 19E,https://www.vrbo.com/405373,2019-07-23
-Hali'i Kai unit 16C,https://www.vrbo.com/477467,2019-07-23
-Hali'i Kai unit 16G,https://www.vrbo.com/389482,2019-07-23
+Hali'i Kai Building 8,https://www.vrbo.com/314430,2019-08-01
+Hali'i Kai unit 7C,https://www.vrbo.com/417938,2019-08-01
+Hali'i Kai unit 19E,https://www.vrbo.com/405373,2019-08-01
+Hali'i Kai unit 16C,https://www.vrbo.com/477467,2019-08-01
+Hali'i Kai unit 16G,https://www.vrbo.com/389482,2019-08-01
+Hali'i Kai unit 7H,https://www.vrbo.com/318165,2019-08-01
+Hali'i Kai unit 5C,https://www.vrbo.com/1213536,2019-08-01
