@@ -313,9 +313,17 @@ class Window(QMainWindow):
                 os.rename('units_temp.txt', 'units.txt')
 
     def generate_excel(self):
-        print("Excel button pressed")
+        # Loop through check boxes to find out what units to view
+        # Check for already created file and open if found
+        # Create if not found
+        # Populate with new data
+        # Save and open updated document
         wb = Workbook()
         ws = wb.active
         ws.title = "Test Worksheet"
-        wb.save("test.xlsx")
+        try:
+            wb.save("test.xlsx")
+        except PermissionError:
+            print("File may already be in use.\nFile not saved!")
+
         os.startfile("test.xlsx")
